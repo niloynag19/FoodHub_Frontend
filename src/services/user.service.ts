@@ -1,0 +1,35 @@
+//! services/user.service.ts
+import { cookies } from "next/headers";
+
+// const AUTH_URL = process.env.NEXT_PUBLIC_API_URL;
+//! for server components only
+export const userService = {
+  getSession: async function () {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`http://localhost5000/api/auth/get-session`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        cache: "no-store", // don't cache users data
+      });
+      const session = await res.json();
+      if (session === null) {
+        return {
+          data: null,
+          error: {
+            message: "Session missing !!",
+          },
+        };
+      }
+      return { data: session, error: null };
+    } catch (err) {
+      return {
+        data: null,
+        error: {
+          message: "something went wrong !",
+        },
+      };
+    }
+  },
+};
