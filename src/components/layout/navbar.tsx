@@ -156,8 +156,6 @@ const Navbar = ({
             )}
           </div>
         </nav>
-
-        {/* Mobile View - আগের মতোই থাকবে, শুধু ইউজার থাকলে তার প্রোফাইল লিংকের ব্যবস্থা থাকবে */}
         <div className="lg:hidden flex items-center justify-between">
           <Link href={logo.url} className="flex items-center gap-2">
             <UtensilsCrossed className="size-6 text-orange-600" />

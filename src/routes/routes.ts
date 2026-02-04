@@ -21,7 +21,7 @@ export const adminRoutes: Route[] = [
   },
 ];
 
-export const sellerRoutes: Route[] = [
+export const providerRoutes: Route[] = [
   {
     title: "Provider Dashboard",
     items: [

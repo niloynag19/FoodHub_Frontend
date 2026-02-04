@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { adminRoutes, customerRoutes, Route, sellerRoutes } from "@/routes/routes";
+import { adminRoutes, customerRoutes, Route, providerRoutes } from "@/routes/routes";
 
 const Roles = {
   admin: "ADMIN",
@@ -38,7 +38,7 @@ export function AppSidebar({
       routes = adminRoutes;
       break;
     case Roles.provider:
-      routes = sellerRoutes; 
+      routes = providerRoutes; 
       break;
     case Roles.customer:
       routes = customerRoutes;
