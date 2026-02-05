@@ -8,11 +8,10 @@ const LogoutButton = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    // এখানে আপনার ব্যাকএন্ডের লগআউট লজিক বা কুকি ক্লিয়ার করার কোড হবে
+
     console.log("Logging out...");
     
-    // আপাতত আমরা জাস্ট লগইন পেজে রিডাইরেক্ট করে দিচ্ছি
-    // পরে এখানে আপনার Auth Store (Zustand) ক্লিয়ার করার লজিক বসাবো [cite: 2026-02-01]
+
     router.push("/login");
   };
 

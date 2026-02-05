@@ -17,12 +17,9 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { adminRoutes, customerRoutes, Route, providerRoutes } from "@/routes/routes";
+import { Roles } from "@/constants/roles";
 
-const Roles = {
-  admin: "ADMIN",
-  provider: "PROVIDER",
-  customer: "CUSTOMER",
-};
+
 
 export function AppSidebar({
   user,

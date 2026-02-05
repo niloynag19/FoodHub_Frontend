@@ -36,7 +36,12 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     onSubmit: async ({ value }) => {
       const toastId=toast.loading("Creating user");
       try {
-        const {data,error}= await authClient.signUp.email(value)
+        const {data,error}= await authClient.signUp.email({
+          name:value.name,
+          email:value.email,
+          password:value.password,
+          callbackURL:"/"
+        })
         if(error)
         {
           toast.error(error.message,{id:toastId})

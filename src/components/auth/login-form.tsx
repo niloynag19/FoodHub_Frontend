@@ -34,13 +34,17 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
     onSubmit: async ({ value }) => {
       const toastId=toast.loading("Login user");
       try {
-        const {data,error}= await authClient.signIn.email(value)
+        const {data,error}= await authClient.signIn.email({
+          email:value.email,
+          password:value.password,
+          callbackURL:"/"
+        })
         if(error)
         {
           toast.error(error.message,{id:toastId})
           return;
         }
-        toast.success("User created successfully",{id:toastId})
+        toast.success("User login successfully",{id:toastId})
       } catch (error) {
         toast.error("Something went wrong",{id:toastId})
       }
