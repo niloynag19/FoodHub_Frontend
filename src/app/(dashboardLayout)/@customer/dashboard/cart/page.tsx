@@ -1,7 +1,63 @@
-export default function CartPage() {
+import { getCartAction } from "@/actions/customer.actions";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+// এই যে নতুন কম্পোনেন্টটি ইমপোর্ট করলাম
+import DeleteCartItem from "@/components/cart/DeleteCartItem"; 
+
+export default async function CartPage() {
+  const result = await getCartAction();
+  const cart = result?.data;
+
+  if (!cart || !cart.items || cart.items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <h2 className="text-2xl font-bold">আপনার কার্ট বর্তমানে খালি</h2>
+        <p className="text-muted-foreground">সুস্বাদু সব খাবার আগে কার্টে যোগ করুন!</p>
+      </div>
+    );
+  }
+
+  const totalAmount = cart.items.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
+
   return (
-    <div>
-      <h1> cart section </h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8 text-orange-600">My Cart 🛒</h1>
+      
+      <div className="grid gap-6">
+        {cart.items.map((item: any) => (
+          <div key={item.id} className="flex items-center gap-4 bg-white dark:bg-zinc-900 p-4 rounded-[1.2rem] shadow-sm border border-orange-50">
+            <div className="relative w-24 h-24 rounded-xl overflow-hidden">
+              <Image 
+                src={item.meal.image || "/placeholder.jpg"} 
+                alt={item.meal.name} 
+                fill 
+                className="object-cover"
+              />
+            </div>
+            
+            <div className="flex-grow">
+              <h3 className="font-bold text-lg">{item.meal.name}</h3>
+              <p className="text-orange-600 font-semibold">{item.price} TK × {item.quantity}</p>
+            </div>
+
+            <div className="flex flex-col items-end gap-2">
+              <p className="font-bold text-xl">{item.price * item.quantity} TK</p>
+              
+              <DeleteCartItem itemId={item.id} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-10 p-6 bg-orange-600 rounded-[1.5rem] text-white flex justify-between items-center shadow-xl shadow-orange-100">
+        <div>
+          <p className="opacity-80 text-sm">Total Amount</p>
+          <h2 className="text-3xl font-black">{totalAmount} TK</h2>
+        </div>
+        <Button className="bg-white text-orange-600 hover:bg-zinc-900 hover:text-white px-8 h-12 rounded-xl font-bold text-lg transition-all">
+          Checkout Now
+        </Button>
+      </div>
     </div>
   );
 }

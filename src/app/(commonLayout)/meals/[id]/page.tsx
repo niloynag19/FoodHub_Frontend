@@ -1,139 +1,100 @@
 import { mealService } from "@/services/meals.services";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import AddToCartButton from "@/components/meals/AddToCartButton";
 import { 
-  Clock, 
-  Star, 
-  MapPin, 
-  ShoppingCart, 
-  ChevronLeft, 
-  ShieldCheck,
-  Flame,
-  Utensils
+  Clock, Star, MapPin, ChevronLeft, ShieldCheck, Flame, Utensils, Share2 
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export default async function MealDetailsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function MealDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const response = await mealService.getMealById(id);
 
-  if (!response?.data) {
-    notFound(); // খাবার খুঁজে না পেলে ৪০৪ পেজ দেখাবে
-  }
-
+  if (!response?.data) notFound();
   const meal = response.data;
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950">
-      {/* ১. টপ নেভিগেশন */}
-      <div className="container mx-auto px-4 py-6">
-        <Button variant="ghost" asChild className="rounded-full gap-2">
-          <Link href="/meals">
-            <ChevronLeft className="size-4" /> Back to Menu
-          </Link>
-        </Button>
-      </div>
+    <div className="min-h-screen bg-zinc-50/30 dark:bg-zinc-950 pb-10">
+      <nav className="sticky top-0 z-50 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border-b">
+        <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+          <Button variant="ghost" asChild className="h-9 rounded-full gap-2 px-3 text-muted-foreground">
+            <Link href="/meals">
+              <ChevronLeft className="size-4" />
+              <span className="text-sm font-bold">Menu</span>
+            </Link>
+          </Button>
+          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><Share2 className="size-4" /></Button>
+        </div>
+      </nav>
 
-      <main className="container mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <main className="container mx-auto px-4 py-4 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
-          {/* ২. লেফট সাইড: ইমেজ সেকশন */}
-          <div className="relative aspect-square lg:aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl">
+          <div className="lg:col-span-5 relative aspect-square rounded-[2rem] overflow-hidden shadow-xl bg-white">
             <Image
               src={meal.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"}
-              alt={meal.name}
-              fill
-              className="object-cover"
-              priority
+              alt={meal.name} fill className="object-cover" priority
             />
-            {!meal.isAvailable && (
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                <Badge className="text-2xl px-8 py-3 bg-red-600">Sold Out</Badge>
-              </div>
-            )}
+            <div className="absolute top-4 left-4 flex flex-col gap-2">
+              <Badge className="bg-orange-600 text-[10px] px-3 py-1 rounded-full border-none font-bold">
+                <Flame className="size-3 mr-1 fill-white" /> POPULAR
+              </Badge>
+              {!meal.isAvailable && (
+                <Badge variant="destructive" className="text-[10px] px-3 py-1 rounded-full font-bold">SOLD OUT</Badge>
+              )}
+            </div>
           </div>
 
-          {/* ৩. রাইট সাইড: কন্টেন্ট সেকশন */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-400 border-none px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                  {meal.category?.name || "Premium Meal"}
-                </Badge>
-                <Badge variant="outline" className="rounded-full gap-1 border-zinc-200">
-                  <Flame className="size-3 text-orange-500 fill-orange-500" /> High Protein
-                </Badge>
+          <div className="lg:col-span-7 space-y-5 lg:pl-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-orange-600 font-bold text-[10px] uppercase tracking-widest">
+                  {meal.category?.name || "Premium"}
+                </span>
+                <div className="h-1 w-1 rounded-full bg-zinc-300" />
+                <div className="flex items-center gap-1">
+                  <Star className="size-3 fill-orange-500 text-orange-500" />
+                  <span className="text-xs font-bold">4.9</span>
+                </div>
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground leading-tight">
+              <h1 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight text-zinc-900 dark:text-zinc-50">
                 {meal.name}
               </h1>
-
-              <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`size-4 ${i < 4 ? "fill-orange-500 text-orange-500" : "text-zinc-300"}`} />
-                    ))}
-                  </div>
-                  <span className="text-foreground font-bold">4.8 (2.5k Reviews)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="size-4 text-orange-500" />
-                  <span>Preparation: 25-30 min</span>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {meal.description}
-            </p>
-
-            <div className="p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-sm flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="size-12 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600">
-                  <Utensils className="size-6" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-muted-foreground uppercase">Prepared by</p>
-                  <h4 className="font-bold text-foreground">{meal.provider?.name}</h4>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-xs text-zinc-500 bg-zinc-50 dark:bg-zinc-800 px-3 py-1.5 rounded-full border border-zinc-100 dark:border-zinc-700">
-                <MapPin className="size-3" /> 2.4 km away
-              </div>
-            </div>
-
-            {/* ৫. প্রাইস এবং অর্ডার বাটন */}
-            <div className="pt-8 border-t border-dashed border-zinc-200 flex flex-col sm:flex-row items-center gap-6">
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Price</span>
-                <span className="text-5xl font-black text-foreground tracking-tighter">
-                  {meal.price} <span className="text-2xl text-orange-600 ml-1">TK</span>
-                </span>
-              </div>
               
-              <Button 
-                disabled={!meal.isAvailable}
-                className="w-full sm:flex-grow h-16 rounded-[1.5rem] bg-orange-600 hover:bg-zinc-900 text-white text-lg font-bold shadow-xl shadow-orange-200 dark:shadow-none transition-all duration-300 gap-3"
-              >
-                <ShoppingCart className="size-6" />
-                Add to Cart
-              </Button>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl">
+                {meal.description || "Freshly prepared with authentic ingredients for a perfect taste."}
+              </p>
             </div>
 
-            <div className="flex items-center gap-6 pt-4 text-xs text-muted-foreground font-medium">
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="size-4 text-green-500" /> Quality Verified
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="flex items-center gap-2 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100">
+                <Clock className="size-4 text-orange-600" />
+                <span className="text-xs font-bold uppercase tracking-tighter">25 min</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="size-4 text-green-500" /> Hygiene Guaranteed
+              <div className="flex items-center gap-2 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100">
+                <Utensils className="size-4 text-orange-600" />
+                <span className="text-xs font-bold uppercase tracking-tighter">1 Person</span>
+              </div>
+              <div className="col-span-2 md:col-span-1 flex items-center gap-2 p-3 rounded-2xl bg-orange-50/50 dark:bg-orange-950/20 border border-orange-100/50">
+                <MapPin className="size-4 text-orange-600" />
+                <span className="text-xs font-bold truncate tracking-tighter">{meal.provider?.name?.split(' ')[0] || "Chef"} Kitchen</span>
+              </div>
+            </div>
+            <div className="bg-white dark:bg-zinc-900 p-5 rounded-[2rem] border border-zinc-100 shadow-sm space-y-4">
+              <div className="flex items-end gap-1.5">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase pb-1.5">Total Price:</span>
+                <span className="text-4xl font-black tracking-tighter text-zinc-900 dark:text-zinc-50">{meal.price}</span>
+                <span className="text-lg font-bold text-orange-600 pb-1">TK</span>
+              </div>
+              <AddToCartButton mealId={meal.id} stock={meal.stock || 20} price={meal.price} />
+              
+              <div className="flex items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase pt-1">
+                <span className="flex items-center gap-1"><ShieldCheck className="size-3 text-green-600" /> Fresh</span>
+                <span className="flex items-center gap-1"><ShieldCheck className="size-3 text-green-600" /> Hygiene</span>
               </div>
             </div>
           </div>

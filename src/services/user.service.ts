@@ -11,7 +11,8 @@ export const userService = {
 
       const res = await fetch(`${AUTH_URL}/get-session`, {
         headers: {
-          Cookie: cookieStore.toString(),
+          Cookie: (await cookies()).toString(), 
+          //cookieStore.toString(),
         },
         cache: "no-store"
       });

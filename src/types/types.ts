@@ -26,4 +26,16 @@ export interface Meal {
   reviews?: any[];
 }
 
+export interface CartPayload {
+  mealId: string;
+  quantity: number;
+  price: number;
+}
+
+export interface CartResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+}
+
 

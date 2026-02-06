@@ -51,13 +51,13 @@ export default async function MealsPage({ searchParams }: IProps) {
           </div>
         </div>
 
-        {/* ৩. Filter & Search Component */}
+        {/* . Filter & Search Component */}
         <div className="p-1 border-y border-dashed py-6">
           <MealFilters />
         </div>
       </div>
 
-      {/* ৪. Meals Grid Section */}
+      {/* . Meals Grid Section */}
       <div className="flex-grow">
         {meals.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
