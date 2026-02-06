@@ -1,8 +1,9 @@
 "use client";
 
-import { Menu, UtensilsCrossed, LayoutDashboard, User as UserIcon } from "lucide-react";
+import { Menu, UtensilsCrossed, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client"; 
 
 import {
   NavigationMenu,
@@ -31,75 +32,51 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "./themeControl";
 import LogoutButton from "./logoutButton";
 
-interface MenuItem {
-  title: string;
-  url: string;
-}
+// আপনার প্রফেশনাল Roles অবজেক্ট [cite: 2026-02-02]
+export const Roles = {
+  admin: "ADMIN",
+  provider: "PROVIDER",
+  customer: "CUSTOMER",
+};
 
-interface NavbarProps {
-  className?: string;
-  isAuthenticated?: boolean;
-  user?: { name: string; email?: string; image?: string; role: string }; // ইউজার ডেটা যোগ করা হয়েছে
-  logo?: {
-    url: string;
-    src: string;
-    alt: string;
-    title: string;
-  };
-  menu?: MenuItem[];
-  auth?: {
-    login: { title: string; url: string };
-    signup: { title: string; url: string };
-  };
-  noAuth?: {
-    dashboard: { title: string; url: string };
-    logout: { title: string; url: string };
-  };
-}
+const Navbar = ({ className }: { className?: string }) => {
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user as any;
+  const isAuthenticated = !!session;
 
-const Navbar = ({
-  className,
-  isAuthenticated = false,
-  user, // ইউজার অবজেক্ট
-  logo = {
-    url: "/",
-    src: "/logo.jpg",
-    alt: "FoodHub Logo",
-    title: "FoodHub",
-  },
-  menu = [
+  const getDashboardUrl = () => {
+    if (user?.role === Roles.admin) return "/admin-dashboard";
+    if (user?.role === Roles.provider) return "/provider-dashboard";
+    return "/dashboard"; 
+  };
+
+  const menuItems = [
     { title: "Home", url: "/" },
     { title: "Meals", url: "/meals" },
     { title: "Categories", url: "/categories" },
     { title: "Shop", url: "/shop" },
-  ],
-  auth = {
-    login: { title: "Login", url: "/login" },
-    signup: { title: "Sign up", url: "/register" },
-  },
-  noAuth = {
-    dashboard: { title: "Dashboard", url: "/dashboard" },
-    logout: { title: "Logout", url: "/logout" },
-  },
-}: NavbarProps) => {
+  ];
+
   return (
     <section className={cn("py-4 border-b w-full bg-background/95 backdrop-blur sticky top-0 z-50", className)}>
       <div className="w-full px-4 lg:px-6 mx-auto">
-        <nav className="hidden lg:flex items-center justify-between">
+        <nav className="flex items-center justify-between">
+          
+          {/* Logo Section */}
           <div className="flex items-center gap-10">
-            <Link href={logo.url} className="flex items-center gap-2 shrink-0">
+            <Link href="/" className="flex items-center gap-2 shrink-0">
               <UtensilsCrossed className="size-8 text-orange-600" />
-              <span className="text-xl font-extrabold tracking-tighter">{logo.title}</span>
+              <span className="text-xl font-extrabold tracking-tighter italic">
+                FOOD<span className="text-orange-600">HUB</span>
+              </span>
             </Link>
 
-            <NavigationMenu>
+            {/* Desktop Menu Links */}
+            <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList className="gap-2">
-                {menu.map((item) => (
+                {menuItems.map((item) => (
                   <NavigationMenuItem key={item.title}>
-                    <NavigationMenuLink
-                      asChild
-                      className="px-4 py-2 text-sm font-semibold rounded-md hover:bg-muted transition-all"
-                    >
+                    <NavigationMenuLink asChild className="px-4 py-2 text-sm font-semibold rounded-md hover:bg-muted transition-all">
                       <Link href={item.url}>{item.title}</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
@@ -111,107 +88,94 @@ const Navbar = ({
           <div className="flex items-center gap-4">
             <ModeToggle />
 
-            {isAuthenticated ? (
+            {/* Auth Logic: Profile Icon or Login Buttons */}
+            {isPending ? (
+              <div className="h-9 w-9 animate-pulse bg-muted rounded-full" />
+            ) : isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-orange-100 p-0">
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full border-2 border-orange-500/20 p-0 hover:bg-orange-50 transition-all">
                     <Avatar className="h-9 w-9">
-                      <AvatarImage src={user?.image || ""} alt={user?.name || "User"} />
-                      <AvatarFallback className="bg-orange-100 text-orange-600 font-bold">
-                        {user?.name?.charAt(0) || "U"}
+                      <AvatarImage src={user?.image || ""} alt={user?.name} />
+                      <AvatarFallback className="bg-orange-600 text-white font-bold uppercase">
+                        {user?.name?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.name}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                      <p className="text-[10px] font-bold text-orange-600 uppercase mt-1">{user?.role} ACCOUNT</p>
+                
+                <DropdownMenuContent className="w-60 mt-2 p-2 shadow-2xl border-orange-100" align="end">
+                  <DropdownMenuLabel className="font-normal p-3">
+                    <div className="flex flex-col space-y-2">
+                      <p className="text-sm font-bold text-foreground">{user?.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                      {/* ডাইনামিক রোল ব্যাজ [cite: 2026-02-02] */}
+                      <div className="inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-orange-100 text-orange-600 border border-orange-200">
+                        {user?.role}
+                      </div>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href={noAuth.dashboard.url} className="cursor-pointer w-full flex items-center">
-                      <LayoutDashboard className="mr-2 h-4 w-4" />
-                      <span>{noAuth.dashboard.title}</span>
+                  <DropdownMenuSeparator className="bg-orange-50" />
+                  
+                  <DropdownMenuItem asChild className="cursor-pointer py-3 rounded-md focus:bg-orange-50">
+                    <Link href={getDashboardUrl()} className="flex items-center w-full">
+                      <LayoutDashboard className="mr-3 h-4 w-4 text-orange-600" />
+                      <span className="font-bold">My Dashboard</span>
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="p-0">
-                     <LogoutButton className="w-full justify-start px-2 py-1.5 h-auto font-normal text-red-600 hover:text-red-600" />
+                  
+                  <DropdownMenuSeparator className="bg-orange-50" />
+                  
+                  {/* আপনার তৈরি LogoutButton এখানে ব্যবহার করা হয়েছে */}
+                  <DropdownMenuItem className="p-0 focus:bg-red-50 rounded-md overflow-hidden">
+                    <LogoutButton />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex items-center gap-3">
-                <Button asChild variant="ghost" size="sm" className="font-bold hover:text-orange-600">
-                  <Link href={auth.login.url}>{auth.login.title}</Link>
+              <div className="hidden lg:flex items-center gap-3">
+                <Button asChild variant="ghost" className="font-bold hover:text-orange-600">
+                  <Link href="/login">Login</Link>
                 </Button>
-                <Button asChild size="sm" className="bg-orange-600 hover:bg-orange-700 font-bold px-6 shadow-md shadow-orange-200 dark:shadow-none">
-                  <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                <Button asChild className="bg-orange-600 hover:bg-orange-700 font-bold px-6 shadow-lg shadow-orange-100">
+                  <Link href="/register">Sign up</Link>
                 </Button>
               </div>
             )}
-          </div>
-        </nav>
-        <div className="lg:hidden flex items-center justify-between">
-          <Link href={logo.url} className="flex items-center gap-2">
-            <UtensilsCrossed className="size-6 text-orange-600" />
-            <span className="font-bold text-lg">{logo.title}</span>
-          </Link>
 
-          <div className="flex items-center gap-2">
-            <ModeToggle />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="border-none shadow-none">
-                  <Menu className="size-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <SheetHeader>
-                  <SheetTitle className="text-left flex items-center gap-2">
-                    <UtensilsCrossed className="size-5 text-orange-600" />
-                    <span className="text-orange-600 font-bold">{logo.title}</span>
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="mt-8 flex flex-col gap-4">
-                  {isAuthenticated && (
-                    <div className="flex items-center gap-3 p-3 bg-muted rounded-lg mb-4">
-                      <Avatar>
-                        <AvatarFallback className="bg-orange-600 text-white">{user?.name?.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold">{user?.name}</span>
-                        <span className="text-xs text-muted-foreground uppercase">{user?.role}</span>
+            {/* Mobile View Toggle */}
+            <div className="lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="border-none shadow-none">
+                    <Menu className="size-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right">
+                  <SheetHeader>
+                    <SheetTitle className="text-left flex items-center gap-2">
+                      <UtensilsCrossed className="size-5 text-orange-600" />
+                      <span className="text-orange-600 font-bold tracking-tight">FoodHub</span>
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-8 flex flex-col gap-4">
+                    {menuItems.map((item) => (
+                      <Link key={item.title} href={item.url} className="py-3 font-semibold border-b hover:text-orange-600 transition-colors">
+                        {item.title}
+                      </Link>
+                    ))}
+                    {!isAuthenticated && (
+                      <div className="flex flex-col gap-3 mt-4">
+                        <Button asChild variant="outline"><Link href="/login">Login</Link></Button>
+                        <Button asChild className="bg-orange-600"><Link href="/register">Sign Up</Link></Button>
                       </div>
-                    </div>
-                  )}
-                  {menu.map((item) => (
-                    <Link key={item.title} href={item.url} className="flex py-3 font-semibold border-b">
-                      {item.title}
-                    </Link>
-                  ))}
-                  <div className="flex flex-col gap-3 mt-6">
-                    {isAuthenticated ? (
-                      <>
-                        <Button asChild variant="outline"><Link href={noAuth.dashboard.url}>Dashboard</Link></Button>
-                        <LogoutButton />
-                      </>
-                    ) : (
-                      <>
-                        <Button asChild variant="outline"><Link href={auth.login.url}>Login</Link></Button>
-                        <Button asChild className="bg-orange-600"><Link href={auth.signup.url}>Sign Up</Link></Button>
-                      </>
                     )}
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
     </section>
   );
