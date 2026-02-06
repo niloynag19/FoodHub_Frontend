@@ -8,22 +8,26 @@ import Swal from "sweetalert2";
 
 export default function DeleteMealButton({ mealId }: { mealId: string }) {
   const handleDelete = async () => {
-    
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this meal!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#ea580c", // Orange-600
-      cancelButtonColor: "#3f3f46", // Zinc-700
+      confirmButtonColor: "#ea580c", 
+      cancelButtonColor: "#3f3f46", 
       confirmButtonText: "Yes, delete it!",
-      borderRadius: "20px"
+  
     });
 
     if (result.isConfirmed) {
       const res = await deleteMealAction(mealId);
       if (res.success) {
-        Swal.fire("Deleted!", "Your meal has been removed.", "success");
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your meal has been removed.",
+          icon: "success",
+          confirmButtonColor: "#ea580c"
+        });
       } else {
         toast.error(res.message || "Failed to delete");
       }
@@ -35,7 +39,7 @@ export default function DeleteMealButton({ mealId }: { mealId: string }) {
       variant="outline" 
       size="icon" 
       onClick={handleDelete}
-      className="rounded-xl border-red-100 text-red-500 hover:bg-red-50 h-10 w-10"
+      className="rounded-xl border-red-100 text-red-500 hover:bg-red-50 h-10 w-10 transition-colors"
     >
       <Trash2 className="h-4 w-4" />
     </Button>

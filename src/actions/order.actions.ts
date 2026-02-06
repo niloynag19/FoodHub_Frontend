@@ -62,6 +62,39 @@ export async function getAllOrdersAction() {
   }
 }
 
+// export async function updateOrderStatusAction(orderId: string, status: string) {
+//   const cookieStore = await cookies();
+//   try {
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}`, {
+//       method: "PATCH",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Cookie: cookieStore.toString(),
+//       },
+//       body: JSON.stringify({ status }),
+//     });
+//     const result = await res.json();
+//     if (result.success) revalidatePath("/dashboard/manage-orders");
+//     return result;
+//   } catch (error) {
+//     return { success: false, message: "Failed to update status." };
+//   }
+// }
+
+export async function getProviderOrdersAction() {
+  const cookieStore = await cookies();
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/provider-orders`, {
+      method: "GET",
+      headers: { Cookie: cookieStore.toString() },
+      cache: "no-store",
+    });
+    return await res.json();
+  } catch (error) {
+    return { success: false, data: [] };
+  }
+}
+
 export async function updateOrderStatusAction(orderId: string, status: string) {
   const cookieStore = await cookies();
   try {
@@ -74,9 +107,14 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
       body: JSON.stringify({ status }),
     });
     const result = await res.json();
-    if (result.success) revalidatePath("/dashboard/manage-orders");
+    if (result.success) {
+     
+      revalidatePath("/dashboard/manage-orders"); // এডমিনের জন্য
+      revalidatePath("/provider-dashboard/orders"); // প্রোভাইডারের জন্য
+    }
     return result;
   } catch (error) {
     return { success: false, message: "Failed to update status." };
   }
 }
+
