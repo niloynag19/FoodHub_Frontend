@@ -84,14 +84,15 @@ export async function getAllOrdersAction() {
 export async function getProviderOrdersAction() {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/provider-orders`, {
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats`, { 
       method: "GET",
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",
     });
     return await res.json();
   } catch (error) {
-    return { success: false, data: [] };
+    return { success: false, data: { recentOrders: [] } };
   }
 }
 
@@ -115,6 +116,21 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
     return result;
   } catch (error) {
     return { success: false, message: "Failed to update status." };
+  }
+}
+
+
+export async function getCustomerOrdersAction() {
+  const cookieStore = await cookies();
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/my-orders`, {
+      method: "GET",
+      headers: { Cookie: cookieStore.toString() },
+      cache: "no-store",
+    });
+    return await res.json();
+  } catch (error) {
+    return { success: false, data: [] };
   }
 }
 

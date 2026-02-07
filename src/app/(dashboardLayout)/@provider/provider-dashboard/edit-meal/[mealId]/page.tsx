@@ -13,13 +13,12 @@ export default async function EditMealPage({ params }: IProps) {
   // ২. সব মিল নিয়ে আসা
   const result = await getAllMealsAction();
   
-  // আপনার এপিআই স্ট্রাকচার অনুযায়ী ডাটা নেওয়া
+ 
   const meals = Array.isArray(result?.data) ? result.data : result?.data?.data || [];
 
-  // ৩. আইডি ফিল্টার করা (এখানে == ব্যবহার করা নিরাপদ যদি আইডি স্ট্রিং বনাম নাম্বার এর ঝামেলা থাকে)
+ 
   const meal = meals.find((m: any) => m.id == mealId || m._id == mealId);
 
-  // ৪. যদি মিল না পাওয়া যায়
   if (!meal) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">

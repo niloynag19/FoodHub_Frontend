@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { updateOrderStatusAction } from "@/actions/order.actions"; // আপনার ফাংশনটি ইম্পোর্ট করুন
+import { updateOrderStatusAction } from "@/actions/order.actions";
 import { toast } from "sonner";
 import {
   Select,
@@ -45,15 +45,16 @@ export default function OrderStatusDropdown({
         onValueChange={handleStatusChange} 
         defaultValue={currentStatus}
       >
-        <SelectTrigger className="w-[140px] rounded-xl border-zinc-200 h-9 text-xs font-bold">
+        <SelectTrigger className="w-[160px] rounded-2xl border-zinc-200 h-10 text-xs font-black shadow-sm">
           <SelectValue placeholder="Change Status" />
         </SelectTrigger>
-        <SelectContent className="rounded-xl shadow-xl border-zinc-100">
-          <SelectItem value="PENDING" className="text-amber-600 font-medium">Pending</SelectItem>
-          <SelectItem value="PROCESSING" className="text-blue-600 font-medium">Processing</SelectItem>
-          <SelectItem value="SHIPPED" className="text-purple-600 font-medium">Shipped</SelectItem>
-          <SelectItem value="DELIVERED" className="text-green-600 font-medium">Delivered</SelectItem>
-          <SelectItem value="CANCELLED" className="text-red-600 font-medium">Cancelled</SelectItem>
+        <SelectContent className="rounded-2xl shadow-2xl border-zinc-100">
+        
+          <SelectItem value="PLACED" className="text-blue-600 font-bold">Placed</SelectItem>
+          <SelectItem value="PROCESSING" className="text-amber-600 font-bold">Processing</SelectItem>
+          <SelectItem value="SHIPPED" className="text-purple-600 font-bold">Shipped</SelectItem>
+          <SelectItem value="DELIVERED" className="text-green-600 font-bold">Delivered</SelectItem>
+          <SelectItem value="CANCELLED" className="text-red-600 font-bold">Cancelled</SelectItem>
         </SelectContent>
       </Select>
     </div>

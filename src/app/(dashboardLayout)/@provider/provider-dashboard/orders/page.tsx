@@ -1,14 +1,15 @@
 import { getProviderOrdersAction } from "@/actions/order.actions";
 import OrderStatusDropdown from "@/components/provider/OrderStatusDropdown";
-import { Badge } from "@/components/ui/badge";
-import { ShoppingBag, Calendar, User, CreditCard } from "lucide-react";
+import { ShoppingBag, Calendar, MapPin, CreditCard } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProviderOrdersPage() {
   const result = await getProviderOrdersAction();
+  console.log("Order result :", result);
 
-  const orders = Array.isArray(result?.data) ? result.data : result?.data?.data || [];
+  // আপনার পোস্টম্যান ডাটা অনুযায়ী recentOrders এর ভেতর ডাটা আছে
+  const orders = result?.data?.recentOrders || [];
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -28,56 +29,46 @@ export default async function ProviderOrdersPage() {
           {orders.map((order: any) => (
             <div 
               key={order.id} 
-              className="bg-white rounded-[2rem] border border-zinc-100 p-6 hover:shadow-xl transition-all duration-300"
+              className="bg-white rounded-[2rem] border border-zinc-100 p-8 hover:shadow-xl transition-all duration-300 shadow-sm"
             >
-              <div className="flex flex-col lg:flex-row justify-between gap-6">
+              <div className="flex flex-col lg:flex-row justify-between gap-8">
                 
-                {/* Order Basic Info */}
+                {/* ১. অর্ডার বেসিক ইনফো */}
                 <div className="flex-1 space-y-4">
                   <div className="flex items-center gap-3">
-                    <span className="bg-orange-100 text-orange-700 px-4 py-1 rounded-full text-xs font-black">
-                      ORDER #{order.id.slice(-6).toUpperCase()}
+                    <span className="bg-orange-100 text-orange-700 px-4 py-1 rounded-full text-[10px] font-black tracking-tighter">
+                      ORDER #{order.id?.slice(-6).toUpperCase()}
                     </span>
-                    <span className="text-zinc-400 text-sm flex items-center gap-1">
+                    <span className="text-zinc-400 text-xs flex items-center gap-1 font-medium">
                       <Calendar size={14} />
                       {new Date(order.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 bg-zinc-100 rounded-full flex items-center justify-center text-zinc-600">
-                      <User size={20} />
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-zinc-800">
+                      <MapPin size={16} className="text-zinc-400" />
+                      <p className="text-sm font-bold">{order.deliveryAddress}</p>
                     </div>
-                    <div>
-                      <p className="text-sm font-bold text-zinc-900">{order.customer?.name || "Guest Customer"}</p>
-                      <p className="text-xs text-zinc-500">{order.customer?.email}</p>
+                    <div className="flex items-center gap-2 text-zinc-500 ml-6">
+                      <CreditCard size={14} />
+                      <p className="text-xs font-medium uppercase tracking-widest">{order.paymentMethod}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Items Summary */}
-                <div className="flex-1 border-l border-zinc-50 lg:pl-10">
-                  <p className="text-xs font-black text-zinc-400 uppercase tracking-widest mb-3">Order Items</p>
-                  <div className="space-y-2">
-                    {order.items?.map((item: any, idx: number) => (
-                      <div key={idx} className="flex justify-between text-sm">
-                        <span className="text-zinc-600 font-medium">{item.meal?.name} <span className="text-orange-500 font-black">x{item.quantity}</span></span>
-                        <span className="text-zinc-400">{item.price * item.quantity} TK</span>
-                      </div>
-                    ))}
-                  </div>
+                {/* ২. পেমেন্ট ও প্রাইজ (আপনার ব্যাকেন্ড অনুযায়ী totalAmount) */}
+                <div className="flex-1 lg:border-l lg:pl-10 border-zinc-50 flex flex-col justify-center">
+                  <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Total Amount</p>
+                  <p className="text-3xl font-black text-orange-600 tracking-tight">
+                    {order.totalAmount} <span className="text-sm font-bold ml-1">TK</span>
+                  </p>
                 </div>
 
-                {/* Status & Price */}
-                <div className="flex-1 flex flex-col items-end justify-between border-l border-zinc-50 lg:pl-10">
-                  <div className="text-right">
-                    <p className="text-xs font-black text-zinc-400 uppercase mb-1">Total Payable</p>
-                    <p className="text-2xl font-black text-zinc-900">{order.totalPrice} TK</p>
-                  </div>
-                  
-                  <div className="mt-4 w-full flex justify-end">
-                    <OrderStatusDropdown orderId={order.id} currentStatus={order.status} />
-                  </div>
+                {/* ৩. স্ট্যাটাস ড্রপডাউন */}
+                <div className="flex-1 flex flex-col items-end justify-center lg:border-l lg:pl-10 border-zinc-50">
+                   <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-3">Order Status</p>
+                   <OrderStatusDropdown orderId={order.id} currentStatus={order.status} />
                 </div>
 
               </div>
