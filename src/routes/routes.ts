@@ -27,6 +27,7 @@ export const providerRoutes: Route[] = [
       { title: "My Menu Items", url: "/provider-dashboard/my-meals" },
       { title: "Add New Meal", url: "/provider-dashboard/add-meal" },
       { title: "Incoming Orders", url: "/provider-dashboard/orders" },
+      { title: "Total revenue", url: "/provider-dashboard/revenue" },
     ],
   },
 ];

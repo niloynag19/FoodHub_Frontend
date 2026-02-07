@@ -5,7 +5,7 @@ import { createOrderAction } from "@/actions/order.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShoppingBag, ArrowRight } from "lucide-react";
 
 interface CheckoutProps {
   cartItems: any[];
@@ -17,14 +17,11 @@ export default function CheckoutButton({ cartItems, providerId }: CheckoutProps)
   const router = useRouter();
 
   const handleCheckout = async () => {
-    // ১. কার্ট খালি কি না চেক করা
     if (!providerId || cartItems.length === 0) {
-      return toast.error("Your cart is empty!");
+      return toast.error("Your cart is empty! 🍕");
     }
 
     setLoading(true);
-    
-    // ২. আপনার ব্যাকেন্ডের রিকোয়েমেন্ট অনুযায়ী পে-লোড সাজানো
     const payload = {
       providerId: providerId,
       deliveryAddress: "Standard Home Delivery", 
@@ -36,36 +33,43 @@ export default function CheckoutButton({ cartItems, providerId }: CheckoutProps)
 
     try {
       const res = await createOrderAction(payload);
-      
-      // এই সেই অংশ যেখানে আপনি কোডটি খুঁজছিলেন
       if (res.success) {
-        toast.success("Order placed successfully! 🚀");
-        router.push("/dashboard/orders"); // অর্ডার পেজে নিয়ে যাবে
-        router.refresh(); // ডাটা আপডেট করতে বাধ্য করবে
+        toast.success("Order placed! 🚀");
+        router.push("/dashboard/orders"); 
+        router.refresh(); 
       } else {
         toast.error(res.message || "Failed to place order.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      toast.error("Network error!");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Button 
-      onClick={handleCheckout}
-      disabled={loading}
-      className="bg-white text-orange-600 hover:bg-zinc-900 hover:text-white px-8 h-12 rounded-xl font-bold text-lg shadow-lg transition-all"
-    >
-      {loading ? (
-        <>
-          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          Processing...
-        </>
-      ) : (
-        "Checkout Now"
-      )}
-    </Button>
+    // এই Div-টি বাটনকে কার্ডের সাথে লেপ্টে থাকতে দিবে না
+    <div className="w-full flex justify-end mt-8 md:mt-0"> 
+      <Button 
+        onClick={handleCheckout}
+        disabled={loading}
+        className="w-full md:w-[280px] bg-zinc-900 text-white h-16 rounded-3xl font-black uppercase tracking-[0.2em] text-[12px] shadow-2xl transition-all active:scale-95 group overflow-hidden"
+      >
+        {loading ? (
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Processing...</span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between w-full px-4">
+            <div className="flex items-center gap-3">
+              <ShoppingBag size={20} className="group-hover:-rotate-12 transition-transform" />
+              <span>Checkout</span>
+            </div>
+            <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+          </div>
+        )}
+      </Button>
+    </div>
   );
 }
