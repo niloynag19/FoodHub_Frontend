@@ -27,13 +27,12 @@ export async function updateProfileAction(payload: any) {
 export async function getAllUsersAction() {
   const cookieStore = await cookies();
   
-  // আপনার লগ অনুযায়ী কুকির সঠিক নাম এটি
   const token = cookieStore.get("better-auth.session_token")?.value; 
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
     headers: {
-      "Authorization": `Bearer ${token}`, // অথবা আপনার ব্যাকেন্ড যেভাবে টোকেন নেয়
-      "Cookie": `better-auth.session_token=${token}` // অনেক সময় বেটার-অথ কুকি হিসেবেই ডাটা চায়
+      "Authorization": `Bearer ${token}`,
+      "Cookie": `better-auth.session_token=${token}` 
     },
     cache: "no-store"
   });
@@ -44,7 +43,6 @@ export async function toggleUserStatusAction(userId: string, currentStatus: stri
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get("better-auth.session_token")?.value;
 
-  // আপনার Enum অনুযায়ী: ACTIVE হলে SUSPENDED হবে, না হলে ACTIVE হবে
   const newStatus = currentStatus === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
   const url = `http://localhost:5000/api/users/admin/users/${userId}`;
 

@@ -44,10 +44,9 @@ export default function StatusDropdown({ userId, currentStatus }: { userId: stri
         disabled={loading}
         value={currentStatus}
         onChange={(e) => handleChange(e.target.value)}
-        // --- Accessibility Fix: Title and Aria-Label Added ---
+      
         title="Change user status"
         aria-label="Change user status"
-        // ----------------------------------------------------
         className={`w-full appearance-none px-4 py-2 rounded-xl border font-black text-[10px] uppercase tracking-widest transition-all cursor-pointer disabled:opacity-50 outline-none
           ${currentStatus === 'ACTIVE' 
             ? 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100' 

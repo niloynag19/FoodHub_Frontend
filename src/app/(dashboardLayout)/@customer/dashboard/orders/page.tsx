@@ -9,7 +9,6 @@ export const dynamic = "force-dynamic";
 export default async function MyOrdersPage() {
   const result = await getCustomerOrdersAction();
   
-  // সেফটি চেক
   const orders = Array.isArray(result?.data) ? result.data : (result?.data?.data || []);
 
   const getStatusConfig = (status: string) => {

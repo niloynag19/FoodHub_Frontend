@@ -2,7 +2,6 @@ import { getCartAction } from "@/actions/customer.actions";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import DeleteCartItem from "@/components/cart/DeleteCartItem";
-// নতুন বাটনটি ইমপোর্ট করলাম
 import Link from "next/link";
 import CheckoutButton from "@/components/checkout/CheckoutForm";
 

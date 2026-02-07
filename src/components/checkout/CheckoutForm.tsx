@@ -48,7 +48,6 @@ export default function CheckoutButton({ cartItems, providerId }: CheckoutProps)
   };
 
   return (
-    // এই Div-টি বাটনকে কার্ডের সাথে লেপ্টে থাকতে দিবে না
     <div className="w-full flex justify-end mt-8 md:mt-0"> 
       <Button 
         onClick={handleCheckout}

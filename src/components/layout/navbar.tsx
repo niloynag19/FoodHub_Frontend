@@ -32,7 +32,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ModeToggle } from "./themeControl";
 import LogoutButton from "./logoutButton";
 
-// আপনার প্রফেশনাল Roles অবজেক্ট [cite: 2026-02-02]
 export const Roles = {
   admin: "ADMIN",
   provider: "PROVIDER",
@@ -109,7 +108,7 @@ const Navbar = ({ className }: { className?: string }) => {
                     <div className="flex flex-col space-y-2">
                       <p className="text-sm font-bold text-foreground">{user?.name}</p>
                       <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
-                      {/* ডাইনামিক রোল ব্যাজ [cite: 2026-02-02] */}
+                      
                       <div className="inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-orange-100 text-orange-600 border border-orange-200">
                         {user?.role}
                       </div>
@@ -126,7 +125,6 @@ const Navbar = ({ className }: { className?: string }) => {
                   
                   <DropdownMenuSeparator className="bg-orange-50" />
                   
-                  {/* আপনার তৈরি LogoutButton এখানে ব্যবহার করা হয়েছে */}
                   <DropdownMenuItem className="p-0 focus:bg-red-50 rounded-md overflow-hidden">
                     <LogoutButton />
                   </DropdownMenuItem>

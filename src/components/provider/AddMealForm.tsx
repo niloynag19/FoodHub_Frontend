@@ -28,7 +28,7 @@ export default function AddMealForm() {
     e.preventDefault();
     if (!selectedCategory) return toast.error("Please select a category!");
 
-    const form = e.currentTarget; // রেফারেন্স ধরে রাখা
+    const form = e.currentTarget; 
     setLoading(true);
 
     const formData = new FormData(form);

@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 
-// actions/stats.actions.ts
 export async function getProviderStatsAction() {
   const cookieStore = await cookies();
   try {

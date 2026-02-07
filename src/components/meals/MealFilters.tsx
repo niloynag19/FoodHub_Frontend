@@ -33,13 +33,11 @@ export function MealFilters() {
     
     params.set("page", "1");
 
-    // startTransition ব্যবহার করলে ডাটা ফেচিং এর সময় পেজ ফ্রিজ হবে না
     startTransition(() => {
       router.push(`?${params.toString()}`, { scroll: false });
     });
   };
 
-  // সার্চের জন্য আলাদা ইফেক্ট (এটি শুধু debouncedSearch বদলালেই চলবে)
   useEffect(() => {
     const currentSearch = searchParams.get("search") || "";
     if (debouncedSearch !== currentSearch) {
@@ -49,7 +47,7 @@ export function MealFilters() {
 
   return (
     <div className={`flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center gap-4 mb-8 ${isPending ? "opacity-50" : "opacity-100"} transition-opacity`}>
-      {/* ১. সার্চ বক্স */}
+    
       <div className="relative flex-grow max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
         <Input
@@ -73,7 +71,6 @@ export function MealFilters() {
         )}
       </div>
 
-      {/* ২. ক্যাটাগরি ড্রপডাউন */}
       <Select 
         value={searchParams.get("category") || "all"} 
         onValueChange={(v) => handleFilterChange("category", v)}
@@ -90,7 +87,6 @@ export function MealFilters() {
         </SelectContent>
       </Select>
 
-      {/* ৩. সর্টিং ড্রপডাউন */}
       <Select 
         value={searchParams.get("sortBy") || "createdAt"} 
         onValueChange={(v) => handleFilterChange("sortBy", v)}

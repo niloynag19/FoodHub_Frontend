@@ -46,7 +46,6 @@ export function MealCard({ meal }: MealCardProps) {
         )}
       </Link>
 
-      {/* ২. প্যাডিং কমানো হয়েছে (p-4) */}
       <CardContent className="flex flex-col flex-grow p-4 space-y-3">
         <div className="space-y-1">
           <div className="flex items-center justify-between">
@@ -66,7 +65,6 @@ export function MealCard({ meal }: MealCardProps) {
           </p>
         </div>
 
-        {/* ৩. ইনফো সেকশনকে আরও ছোট করা হয়েছে */}
         <div className="flex items-center justify-between pt-1">
            <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium">
@@ -80,7 +78,6 @@ export function MealCard({ meal }: MealCardProps) {
            <span className="text-sm font-black text-foreground">{meal.price} TK</span>
         </div>
 
-        {/* ৪. অ্যাকশন বাটনগুলো এক লাইনে আনা হয়েছে */}
         <div className="flex gap-2 pt-1">
           <Button 
             asChild

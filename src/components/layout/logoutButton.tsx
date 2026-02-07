@@ -15,12 +15,11 @@ const LogoutButton = () => {
     console.log("Logging out...");
 
     try {
-      // আসল সেশন ক্লিয়ার করার লজিক [cite: 2026-02-01]
       await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
             router.push("/login");
-            router.refresh(); // পেজ রিফ্রেশ না করলে Navbar এর আইকন যাবে না
+            router.refresh(); 
           },
         },
       });

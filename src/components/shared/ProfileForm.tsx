@@ -52,8 +52,6 @@ export default function ProfileForm({ user }: { user: any }) {
           </span>
         </div>
       </div>
-
-      {/* ডান পাশ: এডিট ফর্ম */}
       <div className="lg:col-span-2">
         <form onSubmit={handleSubmit} className="bg-white rounded-[2.5rem] border border-zinc-100 p-8 shadow-sm space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

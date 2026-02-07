@@ -1,25 +1,24 @@
 "use client";
-
 import { deleteCategoryAction } from "@/actions/category.actions";
 import { Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
-import { confirmAction } from "@/lib/swal-utils"; // আমাদের তৈরি হেল্পারটি ইম্পোর্ট করলাম
+import { confirmAction } from "@/lib/swal-utils"; 
 import { Button } from "../ui/button";
 
 export default function DeleteCategoryButton({ id }: { id: string }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    // প্রফেশনাল SweetAlert কনফার্মেশন বক্স
+    
     const result = await confirmAction({
       title: "Delete Category?",
       text: "This action is permanent and might affect related meals!",
-      icon: "error", // ডিলিট যেহেতু, তাই লাল ওয়ার্নিং আইকন
+      icon: "error", 
       confirmText: "Yes, Delete It!"
     });
 
-    // ইউজার যদি 'Cancel' এ ক্লিক করে, তবে ফাংশন এখানেই থেমে যাবে
+   
     if (!result.isConfirmed) return;
 
     setIsDeleting(true);

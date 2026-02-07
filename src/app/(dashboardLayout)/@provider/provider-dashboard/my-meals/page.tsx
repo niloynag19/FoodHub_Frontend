@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Plus, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
- // এটি নিচে দিচ্ছি
 import { getAllMealsAction } from "@/actions/meal.action";
 import DeleteMealButton from "@/components/provider/DeleteMealButton";
 
@@ -11,7 +10,6 @@ export const dynamic = "force-dynamic";
 export default async function MyMealsPage() {
   const result = await getAllMealsAction();
   
-  // আপনার এপিআই স্ট্রাকচার অনুযায়ী ডাটা নেওয়া
   const meals = Array.isArray(result?.data) ? result.data : result?.data?.data || [];
 
   return (

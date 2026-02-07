@@ -110,8 +110,8 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
     const result = await res.json();
     if (result.success) {
      
-      revalidatePath("/dashboard/manage-orders"); // এডমিনের জন্য
-      revalidatePath("/provider-dashboard/orders"); // প্রোভাইডারের জন্য
+      revalidatePath("/dashboard/manage-orders"); 
+      revalidatePath("/provider-dashboard/orders");
     }
     return result;
   } catch (error) {

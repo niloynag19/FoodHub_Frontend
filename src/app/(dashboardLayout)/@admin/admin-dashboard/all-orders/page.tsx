@@ -2,13 +2,13 @@ import { getAllOrdersAction } from "@/actions/order.actions";
 import OrderStatusDropdown from "@/components/admin/OrderStatusDropdown";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
- // এটি পরে বানাচ্ছি
+
 
 export const dynamic = "force-dynamic";
 
 export default async function AllOrdersPage() {
   const result = await getAllOrdersAction();
-  // Postman অনুযায়ী data.data তে লিস্ট আছে
+
   const orders = Array.isArray(result?.data?.data) ? result.data.data : [];
 
   return (

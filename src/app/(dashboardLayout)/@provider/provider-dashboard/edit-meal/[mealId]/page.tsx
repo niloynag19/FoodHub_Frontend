@@ -3,14 +3,13 @@ import EditMealForm from "@/components/provider/EditMealFrom";
 
 
 interface IProps {
-  params: Promise<{ mealId: string }>; // Next.js 15 এ params একটি Promise
+  params: Promise<{ mealId: string }>; 
 }
 
 export default async function EditMealPage({ params }: IProps) {
-  // ১. params কে await করা বাধ্যতামূলক
+  
   const { mealId } = await params;
 
-  // ২. সব মিল নিয়ে আসা
   const result = await getAllMealsAction();
   
  

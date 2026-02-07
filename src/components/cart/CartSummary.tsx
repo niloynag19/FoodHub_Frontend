@@ -9,7 +9,6 @@ interface CartSummaryProps {
 }
 
 export default function CartSummary({ cartItems, providerId }: CartSummaryProps) {
-  // টোটাল প্রাইস ক্যালকুলেশন
   const totalPrice = cartItems.reduce((acc, item) => 
     acc + (item.price * item.quantity), 0
   );
@@ -18,10 +17,9 @@ export default function CartSummary({ cartItems, providerId }: CartSummaryProps)
     <div className="max-w-4xl mx-auto mt-16 px-4">
       <div className="bg-white rounded-[3.5rem] p-8 md:p-14 border border-zinc-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] relative overflow-hidden group">
         
-        {/* মেইন কন্টেন্ট লেআউট */}
+    
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
           
-          {/* বাম পাশ: প্রাইস ডিটেইলস */}
           <div className="text-center md:text-left space-y-3">
             <p className="text-zinc-400 font-black uppercase text-[10px] tracking-[0.4em] mb-1">
               Final Payable Amount
@@ -40,7 +38,7 @@ export default function CartSummary({ cartItems, providerId }: CartSummaryProps)
             </p>
           </div>
 
-          {/* ডান পাশ: চেকআউট বাটন সেকশন */}
+          
           <div className="w-full md:w-[350px] space-y-4">
             <CheckoutButton cartItems={cartItems} providerId={providerId} />
             <div className="flex justify-center items-center gap-4 text-zinc-300">
@@ -53,7 +51,6 @@ export default function CartSummary({ cartItems, providerId }: CartSummaryProps)
           </div>
         </div>
 
-        {/* প্রিমিয়াম ডেকোরেশন এলিমেন্টস */}
         <div className="absolute -right-20 -bottom-20 h-80 w-80 bg-orange-50 rounded-full blur-[100px] opacity-50 group-hover:opacity-80 transition-opacity duration-700" />
         <div className="absolute -left-20 -top-20 h-60 w-60 bg-zinc-50 rounded-full blur-[80px] opacity-40" />
       </div>

@@ -31,7 +31,7 @@ export async function addToCartAction(payload: {
 
 export async function getCartAction() {
   const cookieStore = await cookies();
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/my-cart`, { // আপনার রাউট অনুযায়ী URL দিন
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/my-cart`, { 
     headers: {
       Cookie: cookieStore.toString(),
     },

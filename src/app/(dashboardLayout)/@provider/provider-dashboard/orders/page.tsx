@@ -8,7 +8,6 @@ export default async function ProviderOrdersPage() {
   const result = await getProviderOrdersAction();
   console.log("Order result :", result);
 
-  // আপনার পোস্টম্যান ডাটা অনুযায়ী recentOrders এর ভেতর ডাটা আছে
   const orders = result?.data?.recentOrders || [];
 
   return (
@@ -33,7 +32,6 @@ export default async function ProviderOrdersPage() {
             >
               <div className="flex flex-col lg:flex-row justify-between gap-8">
                 
-                {/* ১. অর্ডার বেসিক ইনফো */}
                 <div className="flex-1 space-y-4">
                   <div className="flex items-center gap-3">
                     <span className="bg-orange-100 text-orange-700 px-4 py-1 rounded-full text-[10px] font-black tracking-tighter">
@@ -57,15 +55,12 @@ export default async function ProviderOrdersPage() {
                   </div>
                 </div>
 
-                {/* ২. পেমেন্ট ও প্রাইজ (আপনার ব্যাকেন্ড অনুযায়ী totalAmount) */}
                 <div className="flex-1 lg:border-l lg:pl-10 border-zinc-50 flex flex-col justify-center">
                   <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Total Amount</p>
                   <p className="text-3xl font-black text-orange-600 tracking-tight">
                     {order.totalAmount} <span className="text-sm font-bold ml-1">TK</span>
                   </p>
                 </div>
-
-                {/* ৩. স্ট্যাটাস ড্রপডাউন */}
                 <div className="flex-1 flex flex-col items-end justify-center lg:border-l lg:pl-10 border-zinc-50">
                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-3">Order Status</p>
                    <OrderStatusDropdown orderId={order.id} currentStatus={order.status} />

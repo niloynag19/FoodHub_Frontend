@@ -1,21 +1,17 @@
 "use client";
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { UserMinus, UserCheck, Loader2 } from "lucide-react";
 import { toggleUserStatusAction } from "@/actions/user.action";
 
-// এখানে status আসবে String হিসেবে (ACTIVE বা BLOCKED)
 export default function StatusToggleButton({ userId, status }: { userId: string, status: string }) {
   const [loading, setLoading] = useState(false);
 
-  // চেক করা সহজ করার জন্য একটি বুলিয়ান কনস্ট্যান্ট
   const isBlocked = status === "BLOCKED";
 
   const handleToggle = async () => {
     setLoading(true);
     
-    // অ্যাকশনে আমরা বর্তমান স্ট্যাটাসটি পাঠিয়ে দিচ্ছি
     const res = await toggleUserStatusAction(userId, status);
     
     if (res.success) {

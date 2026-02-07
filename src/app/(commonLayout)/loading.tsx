@@ -55,7 +55,7 @@ export default function Loading() {
                style={{ width: '100%' }} />
         </div>
 
-        {/* Professional Tip Box - No State Needed [cite: 2026-02-01] */}
+
         <div className="p-6 bg-zinc-900/50 backdrop-blur-md rounded-2xl border border-zinc-800 shadow-2xl overflow-hidden h-24 flex items-center justify-center">
           <div className="relative w-full h-full">
             {tips.map((tip, index) => (

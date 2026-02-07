@@ -20,7 +20,7 @@ export default function EditMealForm({ meal }: { meal: any }) {
       description: formData.get("description"),
       price: Number(formData.get("price")),
       image: formData.get("image"),
-      categoryId: meal.categoryId, // ক্যাটাগরি আগেরটাই থাকবে
+      categoryId: meal.categoryId, 
     };
 
     const res = await updateMealAction(meal.id, payload);

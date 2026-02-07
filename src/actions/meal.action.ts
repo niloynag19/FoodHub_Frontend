@@ -32,13 +32,11 @@ export async function createMealAction(payload: any) {
 }
 
 
-// actions/meal.actions.ts এ এটি যোগ করুন
-
 export async function getAllMealsAction() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals`, {
       method: "GET",
-      cache: "no-store", // যাতে সব সময় ফ্রেশ ডাটা আসে
+      cache: "no-store", 
     });
     return await res.json();
   } catch (error) {

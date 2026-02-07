@@ -26,7 +26,7 @@ export default async function AllUsersPage() {
           </thead>
           <tbody className="divide-y divide-zinc-50">
             {users.map((user: any) => {
-              // ডাটাবেজ Enum অনুযায়ী SUSPENDED চেক
+             
               const isSuspended = user.status === "SUSPENDED";
 
               return (
@@ -68,7 +68,7 @@ export default async function AllUsersPage() {
                     </div>
                   </td>
                   <td className="px-10 py-6 text-right">
-                    {/* এখানে প্রফেশনাল ড্রপডাউনটি ব্যবহার করা হয়েছে */}
+                    
                     <StatusDropdown userId={user.id} currentStatus={user.status} />
                   </td>
                 </tr>

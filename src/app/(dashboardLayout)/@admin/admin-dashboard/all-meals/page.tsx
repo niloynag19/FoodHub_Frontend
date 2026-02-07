@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Utensils, Trash2, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-// ডিলিট করার জন্য একটি নতুন কম্পোনেন্ট ব্যবহার করা ভালো, তবে আমি এখানে লজিকটা বলে দিচ্ছি
 
 export default async function AllMealsManagementPage() {
   const result = await getAllMealsAction();
@@ -29,7 +28,7 @@ export default async function AllMealsManagementPage() {
                 src={meal.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"}
                 alt={meal.name || "Meal Image"} 
                 fill 
-                priority={false} // পারফরম্যান্সের জন্য
+                priority={false} 
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
@@ -59,7 +58,7 @@ export default async function AllMealsManagementPage() {
                   <Eye size={22} />
                 </Link>
                 
-                {/* প্রোফেশনাল ডিলিট বাটন এখানে আলাদা কম্পোনেন্ট হিসেবে কল করলে SweetAlert কাজ করবে */}
+              
                 <Button 
                   variant="ghost" 
                   className="h-12 px-6 rounded-2xl text-zinc-300 hover:text-red-500 hover:bg-red-50 font-bold transition-all gap-2 group/btn"
