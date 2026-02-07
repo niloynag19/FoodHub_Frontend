@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+const API_URL=process.env.API_URL;
 
 export async function createReviewAction(payload: {
   rating: number;
@@ -9,7 +10,7 @@ export async function createReviewAction(payload: {
   customerId: string;
 }) {
   try {
-    const response = await fetch("http://localhost:5000/api/reviews", {
+    const response = await fetch(`${API_URL}/reviews`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

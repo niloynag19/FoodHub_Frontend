@@ -2,12 +2,14 @@ import { mealService } from "@/services/meals.services";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import AddToCartButton from "@/components/meals/AddToCartButton";
+import ReviewSection from "@/components/meals/ReviewSection";
 import { 
   Clock, Star, MapPin, ChevronLeft, ShieldCheck, Flame, Utensils, Share2 
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Global_Image } from "@/lib/defaultImage";
 
 export default async function MealDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -35,7 +37,7 @@ export default async function MealDetailsPage({ params }: { params: Promise<{ id
           
           <div className="lg:col-span-5 relative aspect-square rounded-[2rem] overflow-hidden shadow-xl bg-white">
             <Image
-              src={meal.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"}
+              src={Global_Image}
               alt={meal.name} fill className="object-cover" priority
             />
             <div className="absolute top-4 left-4 flex flex-col gap-2">
@@ -84,6 +86,7 @@ export default async function MealDetailsPage({ params }: { params: Promise<{ id
                 <span className="text-xs font-bold truncate tracking-tighter">{meal.provider?.name?.split(' ')[0] || "Chef"} Kitchen</span>
               </div>
             </div>
+
             <div className="bg-white dark:bg-zinc-900 p-5 rounded-[2rem] border border-zinc-100 shadow-sm space-y-4">
               <div className="flex items-end gap-1.5">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase pb-1.5">Total Price:</span>
@@ -98,6 +101,9 @@ export default async function MealDetailsPage({ params }: { params: Promise<{ id
               </div>
             </div>
           </div>
+        </div>
+        <div className="mt-16">
+          <ReviewSection mealId={id} />
         </div>
       </main>
     </div>

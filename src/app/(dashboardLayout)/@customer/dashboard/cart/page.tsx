@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import DeleteCartItem from "@/components/cart/DeleteCartItem";
 import Link from "next/link";
 import CheckoutButton from "@/components/checkout/CheckoutForm";
+import { Global_Image } from "@/lib/defaultImage";
 
 export default async function CartPage() {
   const result = await getCartAction();
@@ -32,7 +33,7 @@ export default async function CartPage() {
           <div key={item.id} className="flex items-center gap-4 bg-white dark:bg-zinc-900 p-4 rounded-[1.2rem] shadow-sm border border-orange-50 dark:border-zinc-800">
             <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-zinc-100">
               <Image
-                src={item.meal.image || "/placeholder.jpg"}
+                src={Global_Image}
                 alt={item.meal.name}
                 fill
                 className="object-cover"

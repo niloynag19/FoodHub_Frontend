@@ -1,5 +1,5 @@
 
-// import Footer from "@/components/layout/footer";
+import Footer from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import React from "react"
 const CommonLayout = async ({children}:{children:React.ReactNode})=>{
@@ -8,7 +8,7 @@ const CommonLayout = async ({children}:{children:React.ReactNode})=>{
         <div>
             <Navbar/>
             {children}
-            {/* <Footer/> */}
+            <Footer/>
         </div>
     )
 }

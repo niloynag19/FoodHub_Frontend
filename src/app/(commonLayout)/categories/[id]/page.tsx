@@ -1,5 +1,6 @@
 import { getAllMealsAction } from "@/actions/meal.action";
-import MealCard from "@/components/shared/MealCard";
+import { MealCard } from "@/components/meals/Meals.Card";
+// import MealCard from "@/components/shared/MealCard";
 import { ArrowLeft, UtensilsCrossed, Search } from "lucide-react";
 import Link from "next/link";
 

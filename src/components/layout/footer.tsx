@@ -1,157 +1,87 @@
-// "use client";
+"use client";
 
-// import { useState } from "react";
-// import Link from "next/link";
-// import {
-//   Mail,
-//   Phone,
-//   MapPin,
-//   Clock,
-//   Facebook,
-//   Twitter,
-//   Instagram,
-//   Youtube,
-//   UtensilsCrossed,
-//   ArrowRight,
-//   ChevronUp,
-// } from "lucide-react";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+import { Facebook, Linkedin, Instagram, Youtube } from "lucide-react";
 
-// export default function Footer() {
-//   const [email, setEmail] = useState("");
+const footerLinks = [
+  {
+    title: "About Us",
+    links: ["About us", "Contact us", "Press", "How Foodhub works", "Download apps", "Careers", "Help & support"],
+  },
+  {
+    title: "Our Services",
+    links: ["Food delivery", "Pick-up", "Flowers delivery", "Super Foodhub subscription", "Foodhub deals", "Reward programms", "Terms Of Referral and Condition"],
+  },
+  {
+    title: "Partner with us",
+    links: ["Partner with us", "Ride with us", "Terms & conditions", "Refund & cancellation", "Privacy policy", "Rider Privacy policy", "Partner Privacy policy", "Security policy"],
+  },
+];
 
-//   const scrollToTop = () => {
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-//   };
-
-//   return (
-//     <footer className="bg-background border-t mt-20">
-//       {/* Newsletter Section */}
-//       <div className="bg-orange-600 dark:bg-orange-700 py-10">
-//         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-//           <div className="text-white">
-//             <h2 className="text-2xl font-bold">Subscribe to our newsletter</h2>
-//             <p className="text-orange-10/80">Get the latest updates, recipes, and exclusive offers.</p>
-//           </div>
-//           <div className="flex w-full max-w-md gap-2">
-//             <Input 
-//               placeholder="Enter your email" 
-//               className="bg-white text-black border-none focus-visible:ring-offset-0"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//             />
-//             <Button className="bg-black hover:bg-zinc-800 text-white font-bold">
-//               Join Now
-//             </Button>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="container mx-auto px-4 py-16">
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+export default function Footer() {
+  return (
+    <footer className="bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-900 pt-16 pb-8 transition-colors duration-300">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           
-//           {/* Brand Info */}
-//           <div className="space-y-6">
-//             <Link href="/" className="flex items-center gap-2">
-//               <UtensilsCrossed className="size-8 text-orange-600" />
-//               <span className="text-2xl font-extrabold tracking-tighter italic">
-//                 FOOD<span className="text-orange-600">HUB</span>
-//               </span>
-//             </Link>
-//             <p className="text-muted-foreground text-sm leading-relaxed">
-//               We bring your favorite meals straight to your doorstep. Genuine ingredients, professional chefs, and fast delivery – that's our promise.
-//             </p>
-//             <div className="flex gap-4">
-//               {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
-//                 <Link key={i} href="#" className="h-9 w-9 rounded-full border flex items-center justify-center hover:bg-orange-600 hover:text-white transition-all">
-//                   <Icon className="size-4" />
-//                 </Link>
-//               ))}
-//             </div>
-//           </div>
+          {/* Brand Section */}
+          <div className="lg:col-span-5 space-y-6">
+            <h2 className="text-3xl font-black italic text-orange-600 tracking-tighter">
+              foodhub 
+            </h2>
+            <div className="space-y-4 max-w-md">
+              <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+                Order food from the best restaurants and shops with Foodhub Bangladesh
+              </h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
+                Bangladesh's leading food delivery app with over 10,000+ restaurants along with amazing deals and services. 
+                Discover a world of culinary delights and flavorful experiences with Foodhub, your ultimate food destination.
+              </p>
+            </div>
+            
+            {/* Social Icons */}
+            <div className="flex gap-3">
+              {[Facebook, Linkedin, Instagram, Youtube].map((Icon, idx) => (
+                <Link key={idx} href="#" className="h-10 w-10 flex items-center justify-center rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-orange-600 hover:text-white dark:hover:bg-orange-600 transition-all">
+                  <Icon size={18} />
+                </Link>
+              ))}
+            </div>
+          </div>
 
-//           {/* Quick Links */}
-//           <div className="space-y-6">
-//             <h3 className="text-lg font-bold">Quick Links</h3>
-//             <ul className="space-y-3">
-//               {["Home", "All Meals", "Top Categories", "Our Shop", "Track Order"].map((item) => (
-//                 <li key={item}>
-//                   <Link href="#" className="text-sm text-muted-foreground hover:text-orange-600 flex items-center gap-2 group transition-all">
-//                     <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-all" />
-//                     {item}
-//                   </Link>
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
+          {/* Links Sections */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {footerLinks.map((section) => (
+              <div key={section.title} className="space-y-5">
+                <h4 className="text-sm font-black uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+                  {section.title}
+                </h4>
+                <ul className="space-y-3">
+                  {section.links.map((link) => (
+                    <li key={link}>
+                      <Link href="#" className="text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500 transition-colors">
+                        {link}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
 
-//           {/* Business Hours */}
-//           <div className="space-y-6">
-//             <h3 className="text-lg font-bold">Working Hours</h3>
-//             <ul className="space-y-3 text-sm text-muted-foreground">
-//               <li className="flex justify-between items-center">
-//                 <span>Monday - Friday:</span>
-//                 <span className="font-semibold text-foreground">09:00 - 22:00</span>
-//               </li>
-//               <li className="flex justify-between items-center">
-//                 <span>Saturday:</span>
-//                 <span className="font-semibold text-foreground">10:00 - 23:00</span>
-//               </li>
-//               <li className="flex justify-between items-center">
-//                 <span>Sunday:</span>
-//                 <span className="font-semibold text-orange-600">Open 24/7</span>
-//               </li>
-//               <li className="flex items-center gap-2 mt-4 text-orange-600 italic">
-//                 <Clock className="size-4" />
-//                 <span>Fastest delivery in town!</span>
-//               </li>
-//             </ul>
-//           </div>
-
-//           {/* Contact Info */}
-//           <div className="space-y-6">
-//             <h3 className="text-lg font-bold">Contact Info</h3>
-//             <ul className="space-y-4">
-//               <li className="flex items-start gap-3">
-//                 <MapPin className="size-5 text-orange-600 shrink-0" />
-//                 <span className="text-sm text-muted-foreground">123 Food Street, Culinary City, FC 45678</span>
-//               </li>
-//               <li className="flex items-center gap-3">
-//                 <Phone className="size-5 text-orange-600 shrink-0" />
-//                 <span className="text-sm text-muted-foreground">+880 1234 567 890</span>
-//               </li>
-//               <li className="flex items-center gap-3">
-//                 <Mail className="size-5 text-orange-600 shrink-0" />
-//                 <span className="text-sm text-muted-foreground">support@foodhub.com</span>
-//               </li>
-//             </ul>
-//           </div>
-//         </div>
-
-//         <Separator className="my-10" />
-
-//         {/* Bottom Bar */}
-//         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-//           <p className="text-xs text-muted-foreground text-center md:text-left">
-//             © {new Date().getFullYear()} FoodHub. Built with precision for food lovers.
-//           </p>
-          
-//           <div className="flex gap-6 items-center">
-//              <Link href="#" className="text-xs text-muted-foreground hover:text-orange-600">Privacy Policy</Link>
-//              <Link href="#" className="text-xs text-muted-foreground hover:text-orange-600">Terms of Use</Link>
-//              <Button 
-//                 variant="outline" 
-//                 size="icon" 
-//                 onClick={scrollToTop} 
-//                 className="rounded-full h-10 w-10 hover:bg-orange-600 hover:text-white transition-all shadow-sm"
-//              >
-//                <ChevronUp className="size-5" />
-//              </Button>
-//           </div>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// }
+        {/* Bottom Section */}
+        <div className="mt-16 pt-8 border-t border-zinc-100 dark:border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+          <p className="text-xs font-bold text-zinc-400 dark:text-zinc-500">
+            © Copyright 2026 Foodhub Express Limited. All rights reserved.
+          </p>
+          <div className="flex gap-6 text-[10px] font-black uppercase tracking-wide  st text-zinc-400 dark:text-zinc-500">
+            <Link href="#" className="hover:text-zinc-900 dark:hover:text-zinc-100">Privacy</Link>
+            <Link href="#" className="hover:text-zinc-900 dark:hover:text-zinc-100">Terms</Link>
+            <Link href="#" className="hover:text-zinc-900 dark:hover:text-zinc-100">Security</Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

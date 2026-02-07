@@ -39,7 +39,6 @@ export const customerRoutes: Route[] = [
       { title: "Profile", url: "/dashboard/profile" },
       { title: "My Orders", url: "/dashboard/orders" },
       { title: "My Cart", url: "/dashboard/cart" },
-      { title: "Favorites", url: "/dashboard/favorites" },
     ],
   },
 ];
