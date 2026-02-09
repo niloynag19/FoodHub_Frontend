@@ -7,10 +7,10 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getAllCategoriesAction() {
   try {
-    const res = await fetch(`${API_URL}/categories`, {
+    const res = await fetch(`${API_URL}/api/categories`, {
       method: "GET",
+      cache:"no-store",
       next: { 
-        revalidate: 3600, 
         tags: ["categories"] 
       }
     });
@@ -23,7 +23,7 @@ export async function getAllCategoriesAction() {
 export async function createCategoryAction(name: string) {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${API_URL}/categories`, {
+    const res = await fetch(`${API_URL}/api/categories`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Cookie: cookieStore.toString() },
       body: JSON.stringify({ name }),
@@ -39,7 +39,7 @@ export async function createCategoryAction(name: string) {
 export async function updateCategoryAction(id: string, name: string) {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${API_URL}/categories/${id}`, {
+    const res = await fetch(`${API_URL}/api/categories/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", Cookie: cookieStore.toString() },
       body: JSON.stringify({ name }),
@@ -55,7 +55,7 @@ export async function updateCategoryAction(id: string, name: string) {
 export async function deleteCategoryAction(id: string) {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${API_URL}/categories/${id}`, {
+    const res = await fetch(`${API_URL}/api/categories/${id}`, {
       method: "DELETE",
       headers: { Cookie: cookieStore.toString() },
     });

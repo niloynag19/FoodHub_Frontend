@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { Meal } from "@/types/types";
 
-const API_URL = env.API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface MealFilters {
   search?: string;
@@ -34,8 +34,8 @@ export const mealService = {
 
       const queryString = queryParams.toString();
       const url = queryString
-        ? `${API_URL}/meals?${queryString}`
-        : `${API_URL}/meals`;
+        ? `${API_URL}/api/meals?${queryString}`
+        : `${API_URL}/api/meals`;
 
       const res = await fetch(url, {
         next: { revalidate: 60 },
@@ -72,7 +72,7 @@ export const mealService = {
   
   getMealById: async (id: string) => {
     try {
-      const res = await fetch(`${API_URL}/meals/${id}`, {
+      const res = await fetch(`${API_URL}/api/meals/${id}`, {
         next: { revalidate: 60 }, 
       });
       if (!res.ok) {

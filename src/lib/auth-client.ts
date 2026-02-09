@@ -1,5 +1,11 @@
-import { createAuthClient } from "better-auth/react"
+import { createAuthClient } from "better-auth/react";
+
 export const authClient = createAuthClient({
-    /** The base URL of the server (optional if you're using the same domain) */
-    baseURL: "http://localhost:5000"
-})
+    // Use the full URL for Server Components, and relative for the Browser
+    baseURL: typeof window === "undefined" ?
+        "https://foodhub-server-chi.vercel.app" : window.location.origin,
+    
+    fetchOptions: {
+        credentials: "include",
+    },
+});

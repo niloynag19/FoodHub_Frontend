@@ -376,7 +376,7 @@ export default function HomePage() {
                   <h2 className="text-4xl lg:text-5xl font-black text-white">
                     Get the{" "}
                     <span className="italic bg-gradient-to-r from-white to-amber-100 bg-clip-text text-transparent">
-                      Foodi App
+                      Foodhub App
                     </span>
                   </h2>
                   <p className="text-lg text-amber-50/90 max-w-md">
@@ -460,7 +460,7 @@ export default function HomePage() {
                   Ready to Experience{" "}
                 </span>
                 <span className="bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 bg-clip-text text-transparent italic">
-                  Foodi?
+                  Foodhub?
                 </span>
               </h2>
               <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">

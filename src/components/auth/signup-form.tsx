@@ -15,6 +15,7 @@ import { Input } from "../ui/input"
 import * as z from "zod"
 import { authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
+import { redirect } from "next/navigation"
 
 const fromSchema = z.object({
   name: z.string().min(1, "This field is required"),
@@ -136,7 +137,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </form>
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Button form="login-form" type="submit" className="w-full">Submit</Button>
+        <Button form="login-form" type="submit" className="w-full">Register</Button>
       </CardFooter>
     </Card>
   )

@@ -7,7 +7,7 @@ export async function createMealAction(payload: any) {
   const cookieStore = await cookies();
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals/add-meal`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meals/add-meal`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export async function createMealAction(payload: any) {
 
 export async function getAllMealsAction() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meals`, {
       method: "GET",
       cache: "no-store", 
     });
@@ -48,7 +48,7 @@ export async function getAllMealsAction() {
 export async function deleteMealAction(mealId: string) {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals/${mealId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meals/${mealId}`, {
       method: "DELETE",
       headers: {
         Cookie: cookieStore.toString(),
@@ -67,7 +67,7 @@ export async function deleteMealAction(mealId: string) {
 export async function updateMealAction(mealId: string, payload: any) {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals/${mealId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meals/${mealId}`, {
       method: "PUT", 
       headers: {
         "Content-Type": "application/json",

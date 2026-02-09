@@ -11,7 +11,7 @@ export async function addToCartAction(payload: {
 }) {
   const cookieStore = await cookies();
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/add`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export async function addToCartAction(payload: {
 
 export async function getCartAction() {
   const cookieStore = await cookies();
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/my-cart`, { 
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/my-cart`, { 
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -44,7 +44,7 @@ export async function removeFromCartAction(itemId: string) {
   try {
     const cookieStore = await cookies();
     
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${itemId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/${itemId}`, {
       method: "DELETE",
       headers: {
         Cookie: cookieStore.toString(),

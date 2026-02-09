@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 export async function getCurrentUserAction() {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, { 
       method: "GET",
       headers: {
         Cookie: cookieStore.toString(),

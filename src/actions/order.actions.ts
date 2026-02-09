@@ -7,7 +7,7 @@ export async function createOrderAction(payload: any) {
     const cookieStore = await cookies();
 
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export async function getMyOrdersAction() {
     const cookieStore = await cookies();
 
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/my-orders`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/my-orders`, {
             method: "GET",
             headers: {
                 Cookie: cookieStore.toString(),
@@ -51,7 +51,7 @@ export async function getMyOrdersAction() {
 export async function getAllOrdersAction() {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
       method: "GET",
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",
@@ -65,7 +65,7 @@ export async function getAllOrdersAction() {
 // export async function updateOrderStatusAction(orderId: string, status: string) {
 //   const cookieStore = await cookies();
 //   try {
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}`, {
+//     const res = await fetch(`${process.env.API_URL}/orders/${orderId}`, {
 //       method: "PATCH",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export async function getProviderOrdersAction() {
   const cookieStore = await cookies();
   try {
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats`, { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stats`, { 
       method: "GET",
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",
@@ -99,7 +99,7 @@ export async function getProviderOrdersAction() {
 export async function updateOrderStatusAction(orderId: string, status: string) {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
 export async function getCustomerOrdersAction() {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/my-orders`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/my-orders`, {
       method: "GET",
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",

@@ -53,7 +53,7 @@ const Navbar = ({ className }: { className?: string }) => {
     { title: "Home", url: "/" },
     { title: "Meals", url: "/meals" },
     { title: "Categories", url: "/categories" },
-    { title: "Shop", url: "/shop" },
+    { title: "About", url: "/about" },
   ];
 
   return (

@@ -1,5 +1,6 @@
 import { getAllMealsAction } from "@/actions/meal.action";
 import { Button } from "@/components/ui/button";
+import { Global_Image } from "@/lib/defaultImage";
 import { Utensils, Trash2, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +26,7 @@ export default async function AllMealsManagementPage() {
             {/* Image Container */}
             <div className="h-64 relative overflow-hidden bg-zinc-100">
               <Image 
-                src={meal.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"}
+                src={Global_Image}
                 alt={meal.name || "Meal Image"} 
                 fill 
                 priority={false} 

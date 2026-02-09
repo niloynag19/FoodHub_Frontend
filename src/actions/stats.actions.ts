@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 export async function getProviderStatsAction() {
   const cookieStore = await cookies();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats`, { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stats`, { 
       method: "GET",
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",

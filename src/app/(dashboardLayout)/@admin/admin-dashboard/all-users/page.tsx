@@ -1,10 +1,12 @@
-import { Users, ShieldCheck, Mail, UserMinus, UserCheck } from "lucide-react";
-import StatusDropdown from "@/components/admin/StatusDropdown";
 import { getAllUsersAction } from "@/actions/user.action";
+import StatusDropdown from "@/components/admin/StatusDropdown";
+import { userService } from "@/services/user.service";
 
 export default async function AllUsersPage() {
-  const result = await getAllUsersAction();
-  const users = result?.data || [];
+  // Action theke data niye asha
+  const result = await userService.getAllUsers();
+  const users=result.data;
+  console.log(users);
 
   return (
     <div className="p-10 max-w-7xl mx-auto space-y-10">
@@ -78,5 +80,5 @@ export default async function AllUsersPage() {
         </table>
       </div>
     </div>
-  ); 
+  );
 }
