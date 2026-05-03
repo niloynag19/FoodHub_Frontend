@@ -1,14 +1,24 @@
 import { getAllMealsAction } from "@/actions/meal.action";
 import { MealCard } from "@/components/meals/Meals.Card";
-import { ArrowLeft, UtensilsCrossed, Search, Filter, ChefHat, Flame, Sparkles } from "lucide-react";
+import { ArrowLeft, UtensilsCrossed, Search, Filter, ChefHat, Flame, Sparkles, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export default async function CategoryMealsPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function CategoryMealsPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { id } = await params;
   const result = await getAllMealsAction();
   
-  const filteredMeals = result?.data?.filter((meal: any) => meal.categoryId === id) || [];
+  const totalMeals = result?.data?.filter((meal: any) => meal.categoryId === id) || [];
   
+  // Pagination Logic
+  const resolvedSearchParams = await searchParams;
+  const pageParam = resolvedSearchParams?.page;
+  const currentPage = typeof pageParam === 'string' ? Number(pageParam) : 1;
+  const limit = 8;
+  const totalPages = Math.ceil(totalMeals.length / limit) || 1;
+  const startIndex = (currentPage - 1) * limit;
+  const endIndex = startIndex + limit;
+  const displayedMeals = totalMeals.slice(startIndex, endIndex);
+
   // Mock category data (in real app, fetch category by id)
   const categoryData = {
     name: "Premium Dishes",
@@ -79,7 +89,7 @@ export default async function CategoryMealsPage({ params }: { params: Promise<{ 
                     <Sparkles className="size-3" aria-hidden="true" /> Premium
                   </span>
                   <span className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold uppercase tracking-widest rounded-full">
-                    {filteredMeals.length} Items
+                    {totalMeals.length} Items
                   </span>
                 </div>
               </div>
@@ -114,7 +124,7 @@ export default async function CategoryMealsPage({ params }: { params: Promise<{ 
             {/* Stats Card */}
             <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl p-6 border border-zinc-200/50 dark:border-zinc-800/50 shadow-xl">
               <div className="text-center mb-4">
-                <div className="text-4xl font-black text-zinc-900 dark:text-zinc-50 mb-1">{filteredMeals.length}</div>
+                <div className="text-4xl font-black text-zinc-900 dark:text-zinc-50 mb-1">{totalMeals.length}</div>
                 <div className="text-sm text-muted-foreground font-medium">Available Meals</div>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -165,7 +175,7 @@ export default async function CategoryMealsPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        {filteredMeals.length > 0 ? (
+        {totalMeals.length > 0 ? (
           <>
             {/* Mobile Search (visible only on mobile) */}
             <div className="mb-8 md:hidden">
@@ -184,7 +194,7 @@ export default async function CategoryMealsPage({ params }: { params: Promise<{ 
 
             {/* Meals Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredMeals.map((meal: any) => (
+              {displayedMeals.map((meal: any) => (
                 <div 
                   key={meal.id} 
                   className="group relative transform transition-all duration-300 hover:-translate-y-1"
@@ -199,17 +209,49 @@ export default async function CategoryMealsPage({ params }: { params: Promise<{ 
               ))}
             </div>
 
-            {/* Load More */}
-            <div className="text-center mt-12 pt-8 border-t border-zinc-200/50 dark:border-zinc-800/50">
-              <p className="text-muted-foreground mb-4">
-                Showing {filteredMeals.length} of {filteredMeals.length} meals
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-zinc-200/50 dark:border-zinc-800/50">
+                <Link
+                  href={`/categories/${id}?page=${Math.max(1, currentPage - 1)}`}
+                  className={`h-10 w-10 flex items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm ${currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-orange-500 hover:border-orange-200 dark:hover:border-orange-900'} transition-all`}
+                >
+                  <ChevronRight className="w-5 h-5 rotate-180" />
+                </Link>
+                
+                <div className="flex items-center gap-1.5">
+                  {Array.from({ length: totalPages }).map((_, i) => {
+                    const pageNumber = i + 1;
+                    const isActive = currentPage === pageNumber;
+                    return (
+                      <Link
+                        key={i}
+                        href={`/categories/${id}?page=${pageNumber}`}
+                        className={`h-10 w-10 flex items-center justify-center rounded-xl font-bold transition-all shadow-sm ${
+                          isActive 
+                            ? 'bg-gradient-to-br from-orange-500 to-rose-500 text-white border-transparent' 
+                            : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-orange-500 hover:border-orange-200 dark:hover:border-orange-900'
+                        }`}
+                      >
+                        {pageNumber}
+                      </Link>
+                    );
+                  })}
+                </div>
+
+                <Link
+                  href={`/categories/${id}?page=${Math.min(totalPages, currentPage + 1)}`}
+                  className={`h-10 w-10 flex items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm ${currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-orange-500 hover:border-orange-200 dark:hover:border-orange-900'} transition-all`}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </Link>
+              </div>
+            )}
+            
+            <div className="text-center mt-6">
+              <p className="text-sm text-muted-foreground">
+                Showing {displayedMeals.length} of {totalMeals.length} meals
               </p>
-              <button 
-                className="px-8 py-3 bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-800 dark:to-zinc-700 hover:from-orange-600 hover:to-red-600 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
-                aria-label="Load more meals"
-              >
-                Load More Meals
-              </button>
             </div>
           </>
         ) : (

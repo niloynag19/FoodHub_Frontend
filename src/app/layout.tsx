@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { Chatbot } from "@/components/ui/Chatbot";
+
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,8 +38,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
-            <Toaster/>
+            <SmoothScroll>
+              {children}
+              <Toaster/>
+              <Chatbot />
+            </SmoothScroll>
           </ThemeProvider>
         
       </body>

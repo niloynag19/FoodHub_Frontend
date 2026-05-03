@@ -1,30 +1,21 @@
 import { getAllCategoriesAction } from "@/actions/category.actions";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight, LayoutGrid, ChefHat, TrendingUp, Sparkles, Star, Flame, Clock, Users } from "lucide-react";
+import { Global_Image } from "@/lib/defaultImage";
 
-// Color palette for different categories
-const colorPalettes = [
-  { bg: "bg-gradient-to-br from-orange-500 to-amber-500", text: "text-orange-600", hover: "hover:from-orange-600 hover:to-amber-600" },
-  { bg: "bg-gradient-to-br from-emerald-500 to-teal-500", text: "text-emerald-600", hover: "hover:from-emerald-600 hover:to-teal-600" },
-  { bg: "bg-gradient-to-br from-rose-500 to-pink-500", text: "text-rose-600", hover: "hover:from-rose-600 hover:to-pink-600" },
-  { bg: "bg-gradient-to-br from-violet-500 to-purple-500", text: "text-violet-600", hover: "hover:from-violet-600 hover:to-purple-600" },
-  { bg: "bg-gradient-to-br from-blue-500 to-cyan-500", text: "text-blue-600", hover: "hover:from-blue-600 hover:to-cyan-600" },
-  { bg: "bg-gradient-to-br from-amber-500 to-yellow-500", text: "text-amber-600", hover: "hover:from-amber-600 hover:to-yellow-600" },
-  { bg: "bg-gradient-to-br from-lime-500 to-green-500", text: "text-lime-600", hover: "hover:from-lime-600 hover:to-green-600" },
-  { bg: "bg-gradient-to-br from-indigo-500 to-blue-500", text: "text-indigo-600", hover: "hover:from-indigo-600 hover:to-blue-600" },
-];
+export default async function AllCategoriesPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const resolvedSearchParams = await searchParams;
+  const pageParam = resolvedSearchParams?.page;
+  const currentPage = typeof pageParam === 'string' ? Number(pageParam) : 1;
+  const limit = 8; // 8 items per page for a nice 4-column 2-row layout
 
-// Icons for categories
-const categoryIcons = [
-  "🍕", "🍔", "🥗", "🍣", "🥘", "🍜", "🍰", "☕",
-  "🍝", "🌮", "🥪", "🍛", "🍤", "🥐", "🍦", "🍹"
-];
-
-export default async function AllCategoriesPage() {
-  const result = await getAllCategoriesAction();
+  const result = await getAllCategoriesAction({ page: currentPage, limit });
   const categories = result?.data || [];
+  const meta = result?.meta;
+  const totalPages = meta?.totalPage || 1;
 
-  // Mock trending/popular categories
+  // Mock trending/popular categories (since backend might not provide this directly)
   const trendingIds = ["1", "4", "7"];
   const popularIds = ["2", "5", "8"];
   const quickIds = ["3", "6", "9"];
@@ -37,32 +28,31 @@ export default async function AllCategoriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-orange-50/30 to-white">
+    <div className="min-h-screen bg-zinc-50 dark:bg-black transition-colors duration-300">
       {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-10 w-96 h-96 bg-orange-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
-        <div className="absolute top-3/4 left-1/2 w-80 h-80 bg-yellow-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-2000"></div>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-1/4 left-10 w-96 h-96 bg-orange-500/10 dark:bg-orange-500/5 rounded-full mix-blend-multiply dark:mix-blend-lighten filter blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full mix-blend-multiply dark:mix-blend-lighten filter blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Header */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 z-10">
+        {/* Header Section */}
         <header className="mb-12 sm:mb-16">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
             <div className="space-y-4">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-amber-500 blur-md opacity-70"></div>
-                  <div className="relative h-12 w-12 sm:h-14 sm:w-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
-                    <LayoutGrid className="w-6 h-6 sm:w-7 sm:h-7" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-rose-500 blur-lg opacity-50 dark:opacity-40"></div>
+                  <div className="relative h-14 w-14 bg-gradient-to-br from-orange-500 to-rose-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                    <LayoutGrid className="w-7 h-7" />
                   </div>
                 </div>
                 <div>
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black italic tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600">
-                    Food Categories
+                  <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-zinc-900 dark:text-white mb-1">
+                    Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 italic">Categories</span>
                   </h1>
-                  <p className="text-gray-600 mt-2 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-500" />
+                  <p className="text-zinc-600 dark:text-zinc-400 flex items-center gap-2 text-lg">
+                    <Sparkles className="w-4 h-4 text-orange-500" />
                     Discover culinary delights across {categories.length} expert-curated categories
                   </p>
                 </div>
@@ -70,149 +60,141 @@ export default async function AllCategoriesPage() {
             </div>
             
             <div className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span className="text-sm font-medium text-gray-700">{categories.length} Categories</span>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">{categories.length} Categories</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-200 shadow-sm">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm">
                 <Users className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-gray-700">Chef Verified</span>
+                <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">Chef Verified</span>
               </div>
             </div>
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="h-5 w-5 text-orange-600" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+            <div className="bg-white dark:bg-zinc-900/60 backdrop-blur-xl rounded-[1.5rem] p-5 sm:p-6 border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 bg-orange-100 dark:bg-orange-500/20 rounded-2xl flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Trending Now</p>
-                  <p className="text-xl font-bold text-gray-900">Italian, Asian, Vegan</p>
+                  <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Trending Now</p>
+                  <p className="text-xl font-black text-zinc-900 dark:text-white">Italian, Asian</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center">
-                  <ChefHat className="h-5 w-5 text-emerald-600" />
+            <div className="bg-white dark:bg-zinc-900/60 backdrop-blur-xl rounded-[1.5rem] p-5 sm:p-6 border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 bg-emerald-100 dark:bg-emerald-500/20 rounded-2xl flex items-center justify-center">
+                  <ChefHat className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Chef Specials</p>
-                  <p className="text-xl font-bold text-gray-900">+50 New Recipes</p>
+                  <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Chef Specials</p>
+                  <p className="text-xl font-black text-zinc-900 dark:text-white">+50 New Recipes</p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl flex items-center justify-center">
-                  <Clock className="h-5 w-5 text-violet-600" />
+            <div className="bg-white dark:bg-zinc-900/60 backdrop-blur-xl rounded-[1.5rem] p-5 sm:p-6 border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 bg-blue-100 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Quick Meals</p>
-                  <p className="text-xl font-bold text-gray-900">Under 30 mins</p>
+                  <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Quick Meals</p>
+                  <p className="text-xl font-black text-zinc-900 dark:text-white">Under 30 mins</p>
                 </div>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Main Content */}
+        {/* Categories Grid */}
         <main>
-          {/* Categories Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {categories.map((cat: any, index: number) => {
-              const colorSet = colorPalettes[index % colorPalettes.length];
-              const icon = categoryIcons[index % categoryIcons.length];
-              const status = getCategoryStatus(cat.id);
-              const recipeCount = Math.floor(Math.random() * 80) + 20; // Mock data
+              const status = getCategoryStatus(cat.id || String(index));
+              const recipeCount = Math.floor(Math.random() * 80) + 20; // Mock data for recipes count
+              const rating = (Math.random() * (5 - 4.2) + 4.2).toFixed(1);
 
               return (
                 <Link
-                  key={cat.id}
+                  key={cat.id || index}
                   href={`/categories/${cat.id}`}
-                  className="group relative"
+                  className="group relative flex flex-col outline-none"
                 >
                   {/* Card Container */}
-                  <div className="relative h-full bg-white rounded-[2.5rem] border-2 border-gray-100 shadow-lg hover:shadow-2xl hover:border-orange-200 hover:scale-[1.02] transition-all duration-300 overflow-hidden">
-                    {/* Background Gradient Effect */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${colorSet.bg} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+                  <div className="relative h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl rounded-[2.5rem] border border-zinc-200/50 dark:border-zinc-800/50 shadow-xl shadow-zinc-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden flex flex-col group-hover:-translate-y-2 group-hover:border-orange-500/30">
                     
-                    {/* Status Badge */}
-                    {status && (
-                      <div className="absolute top-5 left-5 z-10">
-                        <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full ${
-                          status.type === 'trending' ? 'bg-orange-100 text-orange-700' :
-                          status.type === 'popular' ? 'bg-amber-100 text-amber-700' :
-                          'bg-blue-100 text-blue-700'
-                        }`}>
-                          {status.icon}
-                          <span className="text-xs font-bold">{status.label}</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content */}
-                    <div className="relative p-7 sm:p-8">
-                      {/* Icon Section */}
-                      <div className="relative mb-6">
-                        {/* Glow Effect */}
-                        <div className={`absolute -inset-4 ${colorSet.bg} opacity-0 group-hover:opacity-20 blur-xl rounded-3xl transition-opacity duration-500`}></div>
-                        
-                        {/* Icon Container */}
-                        <div className={`relative h-28 w-28 mx-auto ${colorSet.bg} rounded-[2rem] flex items-center justify-center shadow-lg group-hover:shadow-xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                          <div className="absolute inset-4 bg-white/10 backdrop-blur-sm rounded-2xl"></div>
-                          <span className="relative text-5xl transform group-hover:scale-125 transition-transform duration-300">
-                            {icon}
-                          </span>
-                          
-                          {/* Decorative Corner */}
-                          <div className="absolute -bottom-3 -right-3 w-12 h-12 bg-white/30 backdrop-blur-sm rounded-2xl rotate-45 border-4 border-white"></div>
-                        </div>
-                      </div>
-
-                      {/* Text Content */}
-                      <div className="text-center space-y-4">
-                        <div>
-                          <h3 className="text-xl font-black text-gray-900 group-hover:text-orange-700 uppercase tracking-tight transition-colors duration-300">
-                            {cat.name}
-                          </h3>
-                          <p className="text-sm text-gray-500 mt-2">
-                            {recipeCount}+ amazing recipes
-                          </p>
-                        </div>
-
-                        {/* Progress Bar (Mock) */}
-                        <div className="pt-2">
-                          <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                            <div 
-                              className={`h-full ${colorSet.bg} rounded-full transition-all duration-500`}
-                              style={{ width: `${Math.min(recipeCount, 100)}%` }}
-                            ></div>
+                    {/* Image Section */}
+                    <div className="relative h-56 w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 via-zinc-900/20 to-transparent z-10" />
+                      <Image 
+                        src={cat.image || Global_Image} 
+                        alt={cat.name} 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                      />
+                      
+                      {/* Top Badges */}
+                      <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
+                        {status && (
+                          <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md shadow-sm w-fit ${
+                            status.type === 'trending' ? 'bg-orange-500/90 text-white' :
+                            status.type === 'popular' ? 'bg-amber-500/90 text-white' :
+                            'bg-blue-500/90 text-white'
+                          }`}>
+                            {status.icon}
+                            <span className="text-[10px] font-bold tracking-wider uppercase">{status.label}</span>
                           </div>
-                          <p className="text-xs text-gray-400 mt-1 text-left">
-                            Popularity: {Math.min(recipeCount, 100)}%
-                          </p>
-                        </div>
-
-                        {/* CTA Button */}
-                        <div className="pt-4">
-                          <div className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-full group-hover:from-orange-50 group-hover:to-amber-50 group-hover:border-orange-300 transition-all duration-300 shadow-sm group-hover:shadow-md">
-                            <span className="text-sm font-bold text-gray-800 group-hover:text-orange-700">
-                              Explore Recipes
-                            </span>
-                            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-transform" />
-                          </div>
+                        )}
+                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/20 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-sm w-fit">
+                           <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                           <span className="text-[10px] font-bold">{rating}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Hover Overlay Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-[2.5rem]"></div>
+                    {/* Content Section */}
+                    <div className="relative z-20 -mt-6 p-6 flex flex-col flex-grow bg-white dark:bg-zinc-900/95 rounded-t-[2rem] shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.05)] dark:shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.5)]">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-600 group-hover:to-rose-500 transition-all duration-300 tracking-tight">
+                          {cat.name}
+                        </h3>
+                        <div className="h-10 w-10 shrink-0 rounded-full bg-orange-50 dark:bg-orange-950/30 flex items-center justify-center text-orange-500 group-hover:scale-110 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                          <ChefHat className="w-5 h-5" />
+                        </div>
+                      </div>
+                      
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5 line-clamp-2 leading-relaxed">
+                        {cat.description || `Explore our authentic ${cat.name} collection, crafted by top culinary experts to delight your taste buds.`}
+                      </p>
+                      
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mb-6 mt-auto">
+                        <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl">Premium</span>
+                        <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 rounded-xl">Handpicked</span>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="pt-5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="flex -space-x-3">
+                             <div className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 bg-gradient-to-br from-orange-200 to-orange-300 flex items-center justify-center text-orange-700 shadow-sm"><ChefHat className="w-3.5 h-3.5"/></div>
+                             <div className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center text-blue-700 shadow-sm"><ChefHat className="w-3.5 h-3.5"/></div>
+                             <div className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-600 dark:text-zinc-300 shadow-sm">+{recipeCount}</div>
+                          </div>
+                          <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Recipes</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 text-sm font-bold text-orange-600 dark:text-orange-500 group-hover:translate-x-1 transition-transform">
+                          Explore <ChevronRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </Link>
               );
@@ -222,40 +204,55 @@ export default async function AllCategoriesPage() {
           {/* Empty State */}
           {categories.length === 0 && (
             <div className="text-center py-20">
-              <div className="w-32 h-32 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
-                <LayoutGrid className="w-16 h-16 text-gray-400" />
+              <div className="w-32 h-32 mx-auto bg-zinc-100 dark:bg-zinc-900 rounded-[2rem] flex items-center justify-center mb-6 border border-zinc-200 dark:border-zinc-800">
+                <LayoutGrid className="w-16 h-16 text-zinc-400 dark:text-zinc-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-700 mb-3">No Categories Yet</h3>
-              <p className="text-gray-500 max-w-md mx-auto">
-                Our chefs are busy cooking up delicious new categories. Check back soon!
+              <h3 className="text-3xl font-black text-zinc-900 dark:text-white mb-3">No Categories Yet</h3>
+              <p className="text-zinc-500 dark:text-zinc-400 max-w-md mx-auto text-lg">
+                Our chefs are busy curating delicious new categories. Check back soon!
               </p>
             </div>
           )}
-        </main>
 
-        {/* Footer Note */}
-        <footer className="mt-16 pt-8 border-t border-gray-200">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-50 to-amber-50 rounded-full border border-orange-200 mb-4">
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              <p className="text-sm font-medium text-gray-700">
-                <span className="font-bold">Pro Tip:</span> Save your favorite categories for quick access
-              </p>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-12 sm:mt-16">
+              <Link
+                href={`/categories?page=${Math.max(1, currentPage - 1)}`}
+                className={`h-10 w-10 flex items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm ${currentPage === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-orange-500 hover:border-orange-200 dark:hover:border-orange-900'} transition-all`}
+              >
+                <ChevronRight className="w-5 h-5 rotate-180" />
+              </Link>
+              
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: totalPages }).map((_, i) => {
+                  const pageNumber = i + 1;
+                  const isActive = currentPage === pageNumber;
+                  return (
+                    <Link
+                      key={i}
+                      href={`/categories?page=${pageNumber}`}
+                      className={`h-10 w-10 flex items-center justify-center rounded-xl font-bold transition-all shadow-sm ${
+                        isActive 
+                          ? 'bg-gradient-to-br from-orange-500 to-rose-500 text-white border-transparent' 
+                          : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-orange-500 hover:border-orange-200 dark:hover:border-orange-900'
+                      }`}
+                    >
+                      {pageNumber}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <Link
+                href={`/categories?page=${Math.min(totalPages, currentPage + 1)}`}
+                className={`h-10 w-10 flex items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm ${currentPage === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-orange-500 hover:border-orange-200 dark:hover:border-orange-900'} transition-all`}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </Link>
             </div>
-            <p className="text-gray-500 text-sm">
-              All recipes are carefully curated by professional chefs and include step-by-step instructions.
-            </p>
-          </div>
-        </footer>
-      </div>
-
-      {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button className="group flex items-center justify-center h-14 w-14 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300">
-          <span className="text-white font-bold text-xl transform group-hover:rotate-90 transition-transform">
-            +
-          </span>
-        </button>
+          )}
+        </main>
       </div>
     </div>
   );

@@ -124,4 +124,24 @@
   }
 }
 
+@layer utilities {
+  /* Custom thin scrollbar */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #d4d4d8;
+    border-radius: 10px;
+  }
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #a1a1aa;
+  }
+}
+
 

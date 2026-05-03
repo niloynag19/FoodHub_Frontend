@@ -46,18 +46,19 @@ export const mealService = {
       }
 
       const apiResponse = await res.json();
+      console.log("API RESPONSE:", JSON.stringify(apiResponse).substring(0, 500));
 
       return {
         success: apiResponse.success,
         message: apiResponse.message || "Meals fetched successfully",
         data: apiResponse.data?.meals || apiResponse.data || [], // API structure অনুযায়ী
-        total: apiResponse.data?.total || 0,
-        pagination: apiResponse.data?.pagination || null,
-        filters: apiResponse.data?.filters || null,
+        total: apiResponse.meta?.total || apiResponse.data?.total || 0,
+        pagination: apiResponse.meta?.pagination || apiResponse.data?.pagination || null,
+        filters: apiResponse.meta?.filters || apiResponse.data?.filters || null,
         error: null,
       };
     } catch (error: any) {
-
+      console.error("FETCH ERROR in getAllMeals:", error);
       return {
         success: false,
         message: error.message || "Failed to fetch meals",

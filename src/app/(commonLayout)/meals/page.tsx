@@ -10,7 +10,9 @@ import {
   Filter,
   Grid3x3,
   List,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Search,
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -40,7 +42,6 @@ export default async function MealsPage({ searchParams }: IProps) {
   const totalItems = response.total || 0;
   const totalPages = Math.ceil(totalItems / limit);
 
-  // Generate page numbers for pagination
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
@@ -74,291 +75,272 @@ export default async function MealsPage({ searchParams }: IProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50/50 to-white">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-amber-500 to-rose-500">
-        <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-        <div className="container relative mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-3xl">
-            <Badge className="mb-4 bg-white/20 backdrop-blur-sm text-white border-none px-4 py-1.5 rounded-full hover:bg-white/30">
-              <Sparkles className="size-3 mr-1" /> Premium Selection
-            </Badge>
-            
-            <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight leading-tight">
-              Discover Culinary <span className="text-amber-200">Delights</span>
-            </h1>
-            
-            <p className="mt-4 text-xl text-white/90 max-w-2xl">
-              Explore {totalItems}+ carefully crafted dishes from our expert chefs. 
-              Every meal tells a story of flavor, tradition, and innovation.
-            </p>
-            
-            <div className="mt-8 flex flex-wrap gap-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
-                <div className="text-2xl font-black">{totalItems}+</div>
-                <div className="text-sm opacity-90">Premium Meals</div>
+    <div className="min-h-screen bg-[#FDFCFB] dark:bg-zinc-950 transition-colors duration-300">
+      {/* Premium Hero Header */}
+      <div className="relative overflow-hidden bg-zinc-900 pt-32 pb-24 md:pt-40 md:pb-32">
+        {/* Background Effects */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[80%] bg-orange-600/20 rounded-full blur-[120px]" />
+          <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[80%] bg-rose-600/20 rounded-full blur-[120px]" />
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 mix-blend-overlay" />
+        </div>
+
+        <div className="container relative mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="max-w-3xl space-y-8">
+              <Badge className="bg-orange-500/10 text-orange-500 border border-orange-500/20 px-4 py-1.5 rounded-full text-sm font-bold tracking-wide uppercase">
+                <Sparkles className="size-4 mr-2 inline" />
+                Explore the menu
+              </Badge>
+              
+              <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1]">
+                Your Favorite <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">Flavors</span> <br />
+                Just a Click Away
+              </h1>
+              
+              <p className="text-xl text-zinc-400 max-w-xl leading-relaxed">
+                Discover a curated selection of {totalItems}+ gourmet dishes crafted with passion. 
+                From local favorites to international delicacies, find exactly what you crave.
+              </p>
+              
+              <div className="flex flex-wrap gap-6 pt-4">
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 min-w-[140px] hover:bg-white/10 transition-colors">
+                  <div className="text-3xl font-black text-white">{totalItems}+</div>
+                  <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mt-1">Dishes</div>
+                </div>
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 min-w-[140px] hover:bg-white/10 transition-colors">
+                  <div className="text-3xl font-black text-white">4.9★</div>
+                  <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mt-1">Avg Rating</div>
+                </div>
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 min-w-[140px] hover:bg-white/10 transition-colors">
+                  <div className="text-3xl font-black text-white">25min</div>
+                  <div className="text-sm text-zinc-500 font-bold uppercase tracking-wider mt-1">Avg Delivery</div>
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
-                <div className="text-2xl font-black">4.8★</div>
-                <div className="text-sm opacity-90">Average Rating</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
-                <div className="text-2xl font-black">15+</div>
-                <div className="text-sm opacity-90">Expert Chefs</div>
+            </div>
+
+            {/* Visual Element (Optional - Could be a large icon or image) */}
+            <div className="hidden lg:flex justify-end relative">
+              <div className="relative size-[400px]">
+                <div className="absolute inset-0 bg-gradient-to-tr from-orange-500 to-rose-500 rounded-full blur-[80px] opacity-20 animate-pulse" />
+                <div className="relative size-full bg-zinc-800/50 backdrop-blur-3xl border border-white/10 rounded-[3rem] flex items-center justify-center shadow-2xl">
+                   <UtensilsCrossed className="size-48 text-white/10" />
+                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center space-y-4">
+                      <div className="size-24 bg-gradient-to-br from-orange-500 to-rose-500 rounded-3xl flex items-center justify-center mx-auto shadow-xl rotate-12">
+                        <UtensilsCrossed className="size-12 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-white">Culinary Excellence</h3>
+                   </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Decorative shapes */}
-        <div className="absolute -bottom-12 -right-12 size-48 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute -top-12 -left-12 size-64 bg-amber-300/20 rounded-full blur-3xl" />
       </div>
 
-      {/* Main Content */}
-      <div className="container relative mx-auto px-4 -mt-12">
-        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-          {/* Filter Header */}
-          <div className="p-6 border-b border-gray-100">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h2 className="text-2xl font-bold text-gray-900">Menu Explorer</h2>
-                  <Badge variant="outline" className="font-normal">
-                    {meals.length} of {totalItems} items
+      {/* Main Content Area */}
+      <div className="container mx-auto px-4 lg:px-8 -mt-16 pb-24 relative z-20">
+        <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] shadow-[0_30px_100px_rgb(0,0,0,0.08)] border border-zinc-100 dark:border-zinc-800 overflow-hidden transition-colors duration-300">
+          
+          {/* Header & Search Bar */}
+          <div className="p-8 md:p-10 border-b border-zinc-100 dark:border-zinc-800">
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-3xl font-black text-zinc-900 dark:text-white">Our Menu</h2>
+                  <Badge className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-none font-bold">
+                    {totalItems} Available
                   </Badge>
                 </div>
-                <p className="text-gray-600">
+                <p className="text-zinc-500 font-medium">
                   {filters.search 
-                    ? `Search results for "${filters.search}"` 
-                    : filters.category 
-                    ? `Showing ${meals.category || filters.category} category`
-                    : "All delicious meals from our menu"
-                  }
+                    ? `Found ${meals.length} items matching your search` 
+                    : "Discover our wide variety of delicious meals"}
                 </p>
               </div>
-              
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 bg-gray-50 rounded-xl p-1">
-                  <Button size="icon" variant="ghost" className="size-9 rounded-lg">
-                    <Grid3x3 className="size-4" />
-                  </Button>
-                  <Button size="icon" variant="ghost" className="size-9 rounded-lg">
-                    <List className="size-4" />
-                  </Button>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="relative flex-grow min-w-[300px]">
+                  {/* Note: In a real app, this search would be integrated with the filter component */}
+                  {/* For now, we are improving the visual layout */}
+                  <div className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800 rounded-2xl px-5 py-4 w-full">
+                    <Search className="size-5 text-zinc-400" />
+                    <input 
+                      type="text" 
+                      placeholder="Search for dishes..." 
+                      className="bg-transparent border-none outline-none w-full text-zinc-900 dark:text-white placeholder:text-zinc-400 font-medium"
+                      defaultValue={filters.search}
+                    />
+                  </div>
                 </div>
-                
-                <Button variant="outline" className="gap-2 rounded-xl">
-                  <SlidersHorizontal className="size-4" />
-                  <span>Filters</span>
-                  {Object.values(filters).some(v => v && v !== "createdAt" && v !== "desc" && v !== "1") && (
-                    <span className="size-2 bg-orange-500 rounded-full"></span>
-                  )}
-                </Button>
+
+                <div className="flex items-center gap-3">
+                  <Button variant="outline" className="h-[58px] px-6 rounded-2xl border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-2 font-bold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all">
+                    <SlidersHorizontal className="size-5" />
+                    Filters
+                  </Button>
+                  <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-2xl">
+                    <Button size="icon" variant="ghost" className="size-11 rounded-xl bg-white dark:bg-zinc-900 shadow-sm text-orange-600">
+                      <Grid3x3 className="size-5" />
+                    </Button>
+                    <Button size="icon" variant="ghost" className="size-11 rounded-xl text-zinc-400">
+                      <List className="size-5" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Filter Panel */}
-          <div className="border-b border-gray-100 bg-gray-50/50 p-6">
+          {/* Expanded Filters Component */}
+          <div className="bg-zinc-50/50 dark:bg-zinc-900/50 p-8 border-b border-zinc-100 dark:border-zinc-800">
             <MealFilters />
           </div>
 
-          {/* Meals Grid */}
-          <div className="p-6">
+          {/* Meals Listing Grid */}
+          <div className="p-8 md:p-10">
             {meals.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="space-y-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                   {meals.map((meal: Meal) => (
                     <MealCard key={meal.id} meal={meal} />
                   ))}
                 </div>
-                
-                {/* Pagination */}
+
+                {/* Refined Pagination */}
                 {totalPages > 1 && (
-                  <div className="mt-12 pt-8 border-t border-gray-100">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div className="text-sm text-gray-600">
-                        Showing <span className="font-bold">{(currentPage - 1) * limit + 1}</span> -{" "}
-                        <span className="font-bold">
-                          {Math.min(currentPage * limit, totalItems)}
-                        </span>{" "}
-                        of <span className="font-bold">{totalItems}</span> results
-                      </div>
-                      
-                      <div className="flex items-center gap-1">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-2 rounded-lg"
-                          asChild
-                          disabled={currentPage <= 1}
-                        >
-                          <Link 
-                            href={`?${new URLSearchParams({
-                              ...params, 
-                              page: (currentPage - 1).toString()
-                            })}`}
-                          >
-                            <ChevronLeft className="size-4" />
+                  <div className="pt-10 border-t border-zinc-100 dark:border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="text-zinc-500 font-medium">
+                      Showing <span className="text-zinc-900 dark:text-white font-bold">{(currentPage - 1) * limit + 1}</span> to{" "}
+                      <span className="text-zinc-900 dark:text-white font-bold">
+                        {Math.min(currentPage * limit, totalItems)}
+                      </span>{" "}
+                      of <span className="text-zinc-900 dark:text-white font-bold">{totalItems}</span> items
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        disabled={currentPage <= 1}
+                        className="h-11 px-4 rounded-xl border-zinc-200 dark:border-zinc-800 font-bold gap-2"
+                        asChild={currentPage > 1}
+                      >
+                        {currentPage > 1 ? (
+                          <Link href={`?${new URLSearchParams({...params, page: (currentPage - 1).toString()})}`}>
+                            <ChevronLeft className="size-5" />
                             Previous
                           </Link>
-                        </Button>
-                        
-                        <div className="flex items-center gap-1 mx-2">
-                          {getPageNumbers().map((page, index) => (
-                            page === '...' ? (
-                              <span key={index} className="px-2 text-gray-400">...</span>
-                            ) : (
-                              <Button
-                                key={index}
-                                variant={currentPage === page ? "default" : "ghost"}
-                                size="sm"
-                                className={`min-w-10 h-10 rounded-lg font-medium ${
-                                  currentPage === page 
-                                    ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md" 
-                                    : "hover:bg-gray-100"
-                                }`}
-                                asChild
-                              >
-                                <Link 
-                                  href={`?${new URLSearchParams({
-                                    ...params, 
-                                    page: page.toString()
-                                  })}`}
-                                >
-                                  {page}
-                                </Link>
-                              </Button>
-                            )
-                          ))}
-                        </div>
-                        
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-2 rounded-lg"
-                          asChild
-                          disabled={currentPage >= totalPages}
-                        >
-                          <Link 
-                            href={`?${new URLSearchParams({
-                              ...params, 
-                              page: (currentPage + 1).toString()
-                            })}`}
-                          >
-                            Next
-                            <ChevronRight className="size-4" />
-                          </Link>
-                        </Button>
+                        ) : (
+                          <>
+                            <ChevronLeft className="size-5" />
+                            Previous
+                          </>
+                        )}
+                      </Button>
+
+                      <div className="flex gap-1.5">
+                        {getPageNumbers().map((page, idx) => (
+                          page === '...' ? (
+                            <span key={idx} className="size-11 flex items-center justify-center text-zinc-400">...</span>
+                          ) : (
+                            <Button
+                              key={idx}
+                              variant={currentPage === page ? "default" : "ghost"}
+                              className={`size-11 rounded-xl font-bold ${
+                                currentPage === page 
+                                  ? "bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/20" 
+                                  : "text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                              }`}
+                              asChild
+                            >
+                              <Link href={`?${new URLSearchParams({...params, page: page.toString()})}`}>
+                                {page}
+                              </Link>
+                            </Button>
+                          )
+                        ))}
                       </div>
+
+                      <Button
+                        variant="outline"
+                        disabled={currentPage >= totalPages}
+                        className="h-11 px-4 rounded-xl border-zinc-200 dark:border-zinc-800 font-bold gap-2"
+                        asChild={currentPage < totalPages}
+                      >
+                        {currentPage < totalPages ? (
+                          <Link href={`?${new URLSearchParams({...params, page: (currentPage + 1).toString()})}`}>
+                            Next
+                            <ChevronRight className="size-5" />
+                          </Link>
+                        ) : (
+                          <>
+                            Next
+                            <ChevronRight className="size-5" />
+                          </>
+                        )}
+                      </Button>
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             ) : (
-              <div className="py-20 text-center">
-                <div className="relative mx-auto max-w-md">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-orange-100 to-rose-100 rounded-full blur-3xl opacity-50" />
-                  <div className="relative bg-white border-2 border-dashed border-gray-200 rounded-3xl p-12">
-                    <div className="relative">
-                      <div className="size-20 mx-auto bg-gradient-to-br from-orange-500 to-rose-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                        <UtensilsCrossed className="size-10 text-white" />
-                      </div>
-                      <div className="absolute -top-2 -right-2">
-                        <Sparkles className="size-6 text-amber-500" />
-                      </div>
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      No matches found
-                    </h3>
-                    
-                    <p className="text-gray-600 mb-6">
-                      {filters.search 
-                        ? `We couldn't find any meals matching "${filters.search}"`
-                        : "Try adjusting your filters or search for something different"
-                      }
-                    </p>
-                    
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                      <Button 
-                        asChild
-                        className="bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600"
-                      >
-                        <Link href="/meals">
-                          <Filter className="size-4 mr-2" />
-                          Clear Filters
-                        </Link>
-                      </Button>
-                      
-                      <Button variant="outline" asChild>
-                        <Link href="/meals/categories">
-                          Browse Categories
-                        </Link>
-                      </Button>
-                    </div>
-                    
-                    <div className="mt-8 pt-6 border-t border-gray-100">
-                      <p className="text-sm text-gray-500">
-                        Need help? Try searching for popular categories like:
-                      </p>
-                      <div className="flex flex-wrap gap-2 mt-3 justify-center">
-                        {["Pizza", "Burger", "Sushi", "Pasta", "Salad", "Dessert"].map((cat) => (
-                          <Badge 
-                            key={cat}
-                            variant="outline"
-                            className="cursor-pointer hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
-                            asChild
-                          >
-                            <Link href={`/meals?category=${cat.toLowerCase()}`}>
-                              {cat}
-                            </Link>
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
+              /* Empty State */
+              <div className="py-24 text-center max-w-xl mx-auto">
+                <div className="relative inline-block mb-8">
+                  <div className="absolute inset-0 bg-orange-500/20 rounded-full blur-[40px] animate-pulse" />
+                  <div className="relative size-24 bg-white dark:bg-zinc-800 rounded-3xl shadow-xl flex items-center justify-center border border-zinc-100 dark:border-zinc-700">
+                    <Search className="size-10 text-orange-500" />
                   </div>
                 </div>
+                <h3 className="text-3xl font-black text-zinc-900 dark:text-white mb-4">No Meals Found</h3>
+                <p className="text-zinc-500 text-lg mb-10 leading-relaxed">
+                  We couldn't find any dishes matching your current selection. 
+                  Try clearing your filters or searching for something else.
+                </p>
+                <Button asChild size="lg" className="h-14 px-10 rounded-2xl bg-orange-500 hover:bg-orange-600 font-bold shadow-xl shadow-orange-500/20">
+                  <Link href="/meals">Clear All Filters</Link>
+                </Button>
               </div>
             )}
           </div>
         </div>
 
-        {/* Featured Categories Section */}
-        {meals.length > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900">Popular Categories</h3>
-                <p className="text-gray-600">Discover meals by category</p>
-              </div>
-              <Button variant="ghost" asChild>
-                <Link href="/categories">
-                  View All
-                  <ChevronRight className="size-4 ml-1" />
-                </Link>
-              </Button>
+        {/* Categories Section - Re-styled */}
+        <div className="mt-20">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-3xl font-black text-zinc-900 dark:text-white">Quick Browse</h2>
+              <p className="text-zinc-500 font-medium mt-1">Explore our most popular categories</p>
             </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {["Italian", "Asian", "Vegetarian", "Desserts", "Fast Food", "Healthy"].map((category) => (
-                <Link
-                  key={category}
-                  href={`/meals?category=${category.toLowerCase()}`}
-                  className="group bg-white border border-gray-200 rounded-2xl p-4 text-center hover:border-orange-300 hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="size-12 mx-auto mb-3 bg-gradient-to-br from-orange-100 to-rose-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <UtensilsCrossed className="size-5 text-orange-600" />
-                  </div>
-                  <span className="font-medium text-gray-900 group-hover:text-orange-600">
-                    {category}
-                  </span>
-                </Link>
-              ))}
-            </div>
+            <Button variant="ghost" className="font-bold text-orange-600 hover:text-orange-700 hover:bg-orange-50 dark:hover:bg-orange-500/10 gap-2" asChild>
+              <Link href="/categories">
+                View All Categories <ArrowRight className="size-4" />
+              </Link>
+            </Button>
           </div>
-        )}
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+            {["Pizza", "Burger", "Sushi", "Pasta", "Salad", "Dessert"].map((category) => (
+              <Link
+                key={category}
+                href={`/meals?category=${category.toLowerCase()}`}
+                className="group relative p-8 rounded-[2rem] bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/5 hover:border-orange-200"
+              >
+                <div className="size-16 mx-auto mb-4 bg-orange-50 dark:bg-orange-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-orange-500 transition-all duration-300">
+                  <UtensilsCrossed className="size-7 text-orange-600 dark:text-orange-400 group-hover:text-white transition-colors" />
+                </div>
+                <span className="font-black text-zinc-900 dark:text-white group-hover:text-orange-600 transition-colors">
+                  {category}
+                </span>
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="size-6 rounded-full bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center">
+                    <ArrowRight className="size-3 text-orange-600" />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

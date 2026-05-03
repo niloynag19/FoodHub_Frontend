@@ -5,11 +5,19 @@ import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function getAllCategoriesAction() {
+export async function getAllCategoriesAction(query?: { page?: number; limit?: number; searchTerm?: string }) {
   try {
-    const res = await fetch(`${API_URL}/api/categories`, {
+    const queryParams = new URLSearchParams();
+    if (query?.page) queryParams.append("page", query.page.toString());
+    if (query?.limit) queryParams.append("limit", query.limit.toString());
+    if (query?.searchTerm) queryParams.append("searchTerm", query.searchTerm);
+
+    const queryString = queryParams.toString();
+    const url = `${API_URL}/api/categories${queryString ? `?${queryString}` : ""}`;
+
+    const res = await fetch(url, {
       method: "GET",
-      cache:"no-store",
+      cache: "no-store",
       next: { 
         tags: ["categories"] 
       }

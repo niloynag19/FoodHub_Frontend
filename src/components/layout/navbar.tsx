@@ -2,6 +2,7 @@
 
 import { Menu, UtensilsCrossed, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client"; 
 
@@ -39,6 +40,7 @@ export const Roles = {
 };
 
 const Navbar = ({ className }: { className?: string }) => {
+  const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user as any;
   const isAuthenticated = !!session;
@@ -54,37 +56,47 @@ const Navbar = ({ className }: { className?: string }) => {
     { title: "Meals", url: "/meals" },
     { title: "Categories", url: "/categories" },
     { title: "About", url: "/about" },
+    { title: "Contact Us", url: "/contact" },
+    { title: "Blog", url: "/blog" },
   ];
 
   return (
-    <section className={cn("py-4 border-b w-full bg-background/95 backdrop-blur sticky top-0 z-50", className)}>
-      <div className="w-full px-4 lg:px-6 mx-auto">
-        <nav className="flex items-center justify-between">
+    <section className={cn("py-4 border-b w-full bg-white/80 dark:bg-gray-950/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-colors duration-300", className)}>
+      <div className="container px-4 lg:px-8 mx-auto">
+        <nav className="flex items-center justify-between relative">
           
           {/* Logo Section */}
-          <div className="flex items-center gap-10">
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <UtensilsCrossed className="size-8 text-orange-600" />
-              <span className="text-xl font-extrabold tracking-tighter italic">
-                FOOD<span className="text-orange-600">HUB</span>
-              </span>
-            </Link>
+          <Link href="/" className="flex items-center gap-2 shrink-0 z-10">
+            <UtensilsCrossed className="size-8 text-orange-600" />
+            <span className="text-xl font-extrabold tracking-tighter italic">
+              FOOD<span className="text-orange-600">HUB</span>
+            </span>
+          </Link>
 
-            {/* Desktop Menu Links */}
-            <NavigationMenu className="hidden lg:flex">
+          {/* Desktop Menu Links */}
+          <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 z-10">
+            <NavigationMenu>
               <NavigationMenuList className="gap-2">
-                {menuItems.map((item) => (
-                  <NavigationMenuItem key={item.title}>
-                    <NavigationMenuLink asChild className="px-4 py-2 text-sm font-semibold rounded-md hover:bg-muted transition-all">
-                      <Link href={item.url}>{item.title}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
+                {menuItems.map((item) => {
+                  const isActive = pathname === item.url;
+                  return (
+                    <NavigationMenuItem key={item.title}>
+                      <NavigationMenuLink asChild className={cn(
+                        "px-4 py-2 text-sm font-semibold rounded-full transition-all",
+                        isActive 
+                          ? "bg-orange-50 text-orange-600 dark:bg-orange-500/10" 
+                          : "hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-500/10 text-gray-700 dark:text-gray-300"
+                      )}>
+                        <Link href={item.url}>{item.title}</Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  );
+                })}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 z-10">
             <ModeToggle />
 
             {/* Auth Logic: Profile Icon or Login Buttons */}
@@ -157,11 +169,21 @@ const Navbar = ({ className }: { className?: string }) => {
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-8 flex flex-col gap-4">
-                    {menuItems.map((item) => (
-                      <Link key={item.title} href={item.url} className="py-3 font-semibold border-b hover:text-orange-600 transition-colors">
-                        {item.title}
-                      </Link>
-                    ))}
+                    {menuItems.map((item) => {
+                      const isActive = pathname === item.url;
+                      return (
+                        <Link 
+                          key={item.title} 
+                          href={item.url} 
+                          className={cn(
+                            "py-3 font-semibold border-b transition-colors",
+                            isActive ? "text-orange-600 border-orange-200" : "hover:text-orange-600 text-gray-700 dark:text-gray-300"
+                          )}
+                        >
+                          {item.title}
+                        </Link>
+                      );
+                    })}
                     {!isAuthenticated && (
                       <div className="flex flex-col gap-3 mt-4">
                         <Button asChild variant="outline"><Link href="/login">Login</Link></Button>

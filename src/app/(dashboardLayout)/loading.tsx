@@ -1,9 +1,5 @@
-const DashboardLoading = () =>{
-    return (
-        <div>
-            <h1>main loading</h1>
-        </div>
-    )
-}
+import { GlobalLoader } from "@/components/ui/GlobalLoader";
 
-export default DashboardLoading
+export default function Loading() {
+  return <GlobalLoader />;
+}

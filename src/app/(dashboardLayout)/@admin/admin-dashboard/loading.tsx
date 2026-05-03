@@ -1,8 +1,5 @@
-const  AdminLoading=()=> {
-  return (
-    <div>
-      <h1> loading........ </h1>
-    </div>
-  );
+import { GlobalLoader } from "@/components/ui/GlobalLoader";
+
+export default function Loading() {
+  return <GlobalLoader />;
 }
-export default AdminLoading
