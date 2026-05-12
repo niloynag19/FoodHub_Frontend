@@ -23,7 +23,7 @@ export default async function MyMealsPage() {
     : result?.data?.data || [];
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-700">
+    <div className="space-y-10">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -47,7 +47,7 @@ export default async function MyMealsPage() {
       {meals.length === 0 ? (
         <div className="bg-white rounded-[2.5rem] border border-zinc-100 p-20 text-center shadow-sm">
           <div className="w-20 h-20 bg-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-orange-600">
-            <UtensilsCrossed className="h-10 w-10" />
+            <Plus className="h-10 w-10" />
           </div>
           <h3 className="text-xl font-bold text-zinc-900 mb-2">No meals found</h3>
           <p className="text-zinc-500 max-w-xs mx-auto mb-8">Start adding delicious meals to your kitchen menu.</p>
@@ -73,7 +73,7 @@ export default async function MyMealsPage() {
                   </div>
                   <div className="absolute bottom-4 right-4">
                     <div className="bg-orange-600 text-white px-4 py-1.5 rounded-xl font-bold text-sm shadow-xl">
-                      ৳{meal?.price || '0'}
+                      {meal?.price || '0'} TK
                     </div>
                   </div>
                 </div>
@@ -81,7 +81,6 @@ export default async function MyMealsPage() {
                 {/* Content Section */}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-2 text-orange-500">
-                    <Star className="h-3 w-3 fill-current" />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Premium Dish</span>
                   </div>
                   <h3 className="font-bold text-lg text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-1">
@@ -95,7 +94,7 @@ export default async function MyMealsPage() {
                       <>
                         <Link href={`/provider-dashboard/edit-meal/${meal.id}`} className="flex-1">
                           <Button variant="outline" className="w-full rounded-xl border-zinc-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 font-bold text-xs h-11 transition-all">
-                            <Edit className="h-3.5 w-3.5 mr-2" /> Edit
+                            Edit
                           </Button>
                         </Link>
                         <DeleteMealButton mealId={meal.id} />
