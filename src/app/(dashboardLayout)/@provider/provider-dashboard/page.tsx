@@ -21,7 +21,11 @@ const Page = async () => {
 
   const statsData = statsRes.data || statsRes;
   const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
-  const mealsData = Array.isArray(mealsRes.data) ? mealsRes.data : (Array.isArray(mealsRes?.data?.data) ? mealsRes.data.data : []);
+  
+  // Robust mapping identical to My Meals page
+  const mealsData = Array.isArray(mealsRes?.data) 
+    ? mealsRes.data 
+    : (mealsRes?.data?.data || mealsRes?.data || []);
   
   return <ProviderDashboardHome stats={statsData} orders={ordersData} meals={mealsData} />;
 };
