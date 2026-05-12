@@ -45,7 +45,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           name: value.name,
           email: value.email,
           password: value.password,
-          callbackURL: "/"
+          callbackURL: process.env.NEXT_PUBLIC_FRONTEND_URL || window.location.origin
         })
         if (error) {
           toast.error(error.message, { id: toastId })
@@ -66,7 +66,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     try {
       const { data, error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: process.env.NEXT_PUBLIC_FRONTEND_URL || window.location.origin,
       });
       if (error) {
         toast.error(error.message, { id: toastId });
@@ -80,10 +80,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
 
   return (
     <Card className="border-none shadow-2xl bg-white/95 backdrop-blur-md overflow-hidden" {...props}>
-      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500" />
       <CardHeader className="space-y-1 pb-4">
         <div className="flex justify-center mb-2">
-          <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-600">
+          <div className="p-3 rounded-2xl bg-orange-100 text-orange-600">
             <UserPlus className="h-6 w-6" />
           </div>
         </div>
@@ -111,7 +111,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                     type="text"
                     id={field.name}
                     placeholder="John Doe"
-                    className="h-11 rounded-xl border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 focus:border-orange-500 focus:ring-orange-500 transition-all"
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
@@ -131,7 +131,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                     type="email"
                     id={field.name}
                     placeholder="name@example.com"
-                    className="h-11 rounded-xl border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 focus:border-orange-500 focus:ring-orange-500 transition-all"
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
@@ -151,7 +151,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                     type="password"
                     id={field.name}
                     placeholder="••••••••"
-                    className="h-11 rounded-xl border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500 transition-all"
+                    className="h-11 rounded-xl border-zinc-200 focus:border-orange-500 focus:ring-orange-500 transition-all"
                     name={field.name}
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
@@ -168,7 +168,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           form="signup-form" 
           type="submit" 
           disabled={isLoading}
-          className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-200 transition-all active:scale-[0.98]"
+          className="w-full h-11 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-lg shadow-orange-200 transition-all active:scale-[0.98]"
         >
           {isLoading ? "Creating account..." : "Sign Up"}
         </Button>
@@ -201,7 +201,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
 
         <p className="text-center text-xs text-muted-foreground mt-4">
           Already have an account?{" "}
-          <Link href="/login" className="font-bold text-emerald-600 hover:underline">
+          <Link href="/login" className="font-bold text-orange-600 hover:underline">
             Sign In
           </Link>
         </p>
