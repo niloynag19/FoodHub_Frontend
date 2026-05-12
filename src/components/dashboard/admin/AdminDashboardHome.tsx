@@ -23,6 +23,8 @@ import {
 
 interface AdminDashboardHomeProps {
   stats: any;
+  users?: any[];
+  orders?: any[];
 }
 
 const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
@@ -37,7 +39,7 @@ const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
   </div>
 );
 
-export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
+export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDashboardHomeProps) => {
   if (!stats) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -46,24 +48,34 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
     );
   }
 
-  const { summary = {}, recentOrderVolume = [], recentUsers = [] } = stats;
-
   // Flexible data mapping to handle different API structures
   const getVal = (key: string) => {
-    return summary[key] ?? stats[key] ?? stats.data?.[key] ?? 0;
+    return stats[key] ?? stats.data?.[key] ?? stats.summary?.[key] ?? 0;
   };
+
+  // Generate Growth Chart Data from real orders
+  const last7Days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }).reverse();
+
+  const chartData = last7Days.map(date => {
+    const count = orders.filter(o => new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date).length;
+    return { date, orders: count };
+  });
 
   const summaryCards = [
     { 
       title: "Total Users", 
-      value: getVal("totalUsers"), 
+      value: getVal("totalUsers") || users.length, 
       icon: Users, 
       color: "text-cyan-600", 
       bgColor: "bg-cyan-50" 
     },
     { 
       title: "Total Providers", 
-      value: getVal("totalProviders"), 
+      value: getVal("totalProviders") || users.filter(u => u.role === 'PROVIDER').length, 
       icon: Store, 
       color: "text-teal-600", 
       bgColor: "bg-teal-50" 
@@ -77,7 +89,7 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
     },
     { 
       title: "Total Orders", 
-      value: getVal("totalOrders"), 
+      value: getVal("totalOrders") || orders.length, 
       icon: ShoppingCart, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
@@ -86,19 +98,6 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700">
-      {/* Detailed Debug Info */}
-      <div className="bg-zinc-900 p-4 rounded-xl border border-green-500/50 overflow-hidden">
-        <p className="text-green-500 font-mono text-xs mb-2 font-bold">--- DASHBOARD DEBUGGER ---</p>
-        <pre className="text-[10px] text-green-400 overflow-auto max-h-40 font-mono">
-          {JSON.stringify({ 
-            received_stats_keys: Object.keys(stats || {}),
-            has_summary: !!stats?.summary,
-            summary_keys: stats?.summary ? Object.keys(stats.summary) : 'N/A',
-            data_preview: JSON.stringify(stats).substring(0, 200) + "..."
-          }, null, 2)}
-        </pre>
-      </div>
-
       {/* Title */}
       <h1 className="text-2xl font-bold text-zinc-900">Overview</h1>
 
@@ -118,7 +117,7 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={recentOrderVolume}>
+              <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#0891b2" stopOpacity={0.1}/>
@@ -164,10 +163,10 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
           </div>
           
           <div className="flex-1 space-y-4">
-            {recentUsers && recentUsers.length > 0 ? (
-              recentUsers.slice(0, 5).map((user: any) => (
+            {users && users.length > 0 ? (
+              [...users].reverse().slice(0, 5).map((user: any) => (
                 <div key={user.id} className="flex items-center gap-3 p-2 hover:bg-zinc-50 rounded-xl transition-colors">
-                  <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 font-bold">
+                  <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 font-bold uppercase">
                     {user.name.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
