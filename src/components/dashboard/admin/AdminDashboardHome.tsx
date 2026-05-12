@@ -72,28 +72,28 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
   const summaryCards = [
     { 
       title: "Total Users", 
-      value: getVal("totalUsers") || users?.length || 0, 
+      value: users?.length || getVal("totalUsers") || 0, 
       icon: Users, 
       color: "text-cyan-600", 
       bgColor: "bg-cyan-50" 
     },
     { 
       title: "Total Providers", 
-      value: getVal("totalProviders") || users?.filter(u => u?.role === 'PROVIDER').length || 0, 
+      value: users?.filter(u => u?.role === 'PROVIDER').length || getVal("totalProviders") || 0, 
       icon: Store, 
       color: "text-teal-600", 
       bgColor: "bg-teal-50" 
     },
     { 
       title: "Total Meals", 
-      value: meals.length || getVal("totalMeals"), 
+      value: meals?.length || getVal("totalMeals") || 0, 
       icon: Utensils, 
       color: "text-purple-600", 
       bgColor: "bg-purple-50" 
     },
     { 
       title: "Total Orders", 
-      value: getVal("totalOrders") || orders?.length || 0, 
+      value: orders?.length || getVal("totalOrders") || 0, 
       icon: ShoppingCart, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 

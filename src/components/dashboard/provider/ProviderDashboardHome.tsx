@@ -71,21 +71,21 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
   const summaryCards = [
     { 
       title: "My Meals", 
-      value: meals.length || getVal("totalMeals"), 
+      value: meals?.length || getVal("totalMeals") || 0, 
       icon: Utensils, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
     },
     { 
       title: "Total Orders", 
-      value: getVal("totalOrders") || orders?.length || 0, 
+      value: orders?.length || getVal("totalOrders") || 0, 
       icon: ShoppingCart, 
       color: "text-blue-600", 
       bgColor: "bg-blue-50" 
     },
     { 
       title: "Revenue", 
-      value: `$${(Number(getVal("totalRevenue")) || orders?.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0) || 0).toFixed(2)}`, 
+      value: `$${(orders?.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0) || Number(getVal("totalRevenue")) || 0).toFixed(2)}`, 
       icon: DollarSign, 
       color: "text-emerald-600", 
       bgColor: "bg-emerald-50" 
