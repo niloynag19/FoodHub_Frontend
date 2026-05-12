@@ -38,9 +38,10 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
       const validation = fromSchema.safeParse(value);
       if (!validation.success) {
         console.error("Validation failed:", validation.error);
-        toast.error(validation.error.errors[0].message);
+        toast.error(validation.error.issues[0].message);
         return;
       }
+
 
       const toastId = toast.loading("Logging in...");
       setIsLoading(true);
