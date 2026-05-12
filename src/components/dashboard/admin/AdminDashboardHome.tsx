@@ -20,6 +20,7 @@ import {
   ShoppingCart, 
   ArrowRight
 } from "lucide-react";
+import Link from "next/link";
 
 interface AdminDashboardHomeProps {
   stats: any;
@@ -185,10 +186,13 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDash
             )}
           </div>
 
-          <button className="mt-6 w-full py-2.5 px-4 bg-cyan-50/50 hover:bg-cyan-100/50 text-cyan-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-cyan-100/50">
+          <Link 
+            href="/admin-dashboard/all-users"
+            className="mt-6 w-full py-2.5 px-4 bg-cyan-50/50 hover:bg-cyan-100/50 text-cyan-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-cyan-100/50"
+          >
             View All Users
             <ArrowRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

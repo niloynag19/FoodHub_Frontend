@@ -19,6 +19,7 @@ import {
   ArrowRight,
   Package
 } from "lucide-react";
+import Link from "next/link";
 
 interface ProviderDashboardHomeProps {
   stats: any;
@@ -197,10 +198,13 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
             )}
           </div>
 
-          <button className="mt-6 w-full py-2.5 px-4 bg-blue-50/50 hover:bg-blue-100/50 text-blue-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-blue-100/50">
+          <Link 
+            href="/provider-dashboard/orders"
+            className="mt-6 w-full py-2.5 px-4 bg-blue-50/50 hover:bg-blue-100/50 text-blue-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-blue-100/50"
+          >
             View All Activity
             <ArrowRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>
