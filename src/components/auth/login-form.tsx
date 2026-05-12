@@ -83,7 +83,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
     try {
       const { data, error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: process.env.NEXT_PUBLIC_FRONTEND_URL || window.location.origin,
       });
       if (error) {
         toast.error(error.message, { id: toastId });
