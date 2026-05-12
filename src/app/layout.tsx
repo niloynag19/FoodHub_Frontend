@@ -38,11 +38,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SmoothScroll>
+            {/* <SmoothScroll> */}
               {children}
               <Toaster/>
-              <Chatbot />
-            </SmoothScroll>
+              {/* <Chatbot /> */}
+            {/* </SmoothScroll> */}
           </ThemeProvider>
         
       </body>
