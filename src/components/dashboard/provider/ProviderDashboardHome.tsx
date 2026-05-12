@@ -80,22 +80,22 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
       title: "Total Orders", 
       value: orders?.length || getVal("totalOrders") || 0, 
       icon: ShoppingCart, 
-      color: "text-blue-600", 
-      bgColor: "bg-blue-50" 
+      color: "text-amber-600", 
+      bgColor: "bg-amber-50" 
     },
     { 
       title: "Revenue", 
       value: `$${(orders?.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0) || Number(getVal("totalRevenue")) || 0).toFixed(2)}`, 
       icon: DollarSign, 
-      color: "text-emerald-600", 
-      bgColor: "bg-emerald-50" 
+      color: "text-orange-600", 
+      bgColor: "bg-orange-50" 
     },
     { 
       title: "Active Orders", 
       value: orders?.filter((o: any) => o?.status !== 'DELIVERED' && o?.status !== 'CANCELLED').length || 0, 
       icon: Clock, 
-      color: "text-purple-600", 
-      bgColor: "bg-purple-50" 
+      color: "text-amber-600", 
+      bgColor: "bg-amber-50" 
     },
   ];
 
@@ -123,8 +123,8 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -148,11 +148,11 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
-                  stroke="#10b981" 
+                  stroke="#f59e0b" 
                   strokeWidth={3} 
                   fillOpacity={1} 
                   fill="url(#colorRevenue)"
-                  dot={{ r: 4, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }}
+                  dot={{ r: 4, fill: '#f59e0b', strokeWidth: 2, stroke: '#fff' }}
                   activeDot={{ r: 6, strokeWidth: 0 }}
                 />
               </AreaChart>
@@ -171,7 +171,7 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
             {orders && orders.length > 0 ? (
               [...orders].reverse().slice(0, 5).map((order: any) => (
                 <div key={order.id} className="flex items-center gap-3 p-3 hover:bg-zinc-50 rounded-xl transition-colors border border-transparent hover:border-zinc-100">
-                  <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                  <div className="h-10 w-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
                     <Package className="h-5 w-5" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -183,7 +183,7 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
                       order?.status === 'DELIVERED' ? 'bg-emerald-50 text-emerald-600' :
                       order?.status === 'CANCELLED' ? 'bg-red-50 text-red-600' :
-                      'bg-blue-50 text-blue-600'
+                      'bg-orange-50 text-orange-600'
                     }`}>
                       {order?.status || 'PENDING'}
                     </span>
@@ -200,7 +200,7 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
 
           <Link 
             href="/provider-dashboard/orders"
-            className="mt-6 w-full py-2.5 px-4 bg-blue-50/50 hover:bg-blue-100/50 text-blue-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-blue-100/50"
+            className="mt-6 w-full py-2.5 px-4 bg-orange-50/50 hover:bg-orange-100/50 text-orange-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-orange-100/50"
           >
             View All Activity
             <ArrowRight className="h-4 w-4" />

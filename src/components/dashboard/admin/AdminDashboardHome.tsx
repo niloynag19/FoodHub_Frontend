@@ -74,22 +74,22 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
       title: "Total Users", 
       value: users?.length || getVal("totalUsers") || 0, 
       icon: Users, 
-      color: "text-cyan-600", 
-      bgColor: "bg-cyan-50" 
+      color: "text-orange-600", 
+      bgColor: "bg-orange-50" 
     },
     { 
       title: "Total Providers", 
       value: users?.filter(u => u?.role === 'PROVIDER').length || getVal("totalProviders") || 0, 
       icon: Store, 
-      color: "text-teal-600", 
-      bgColor: "bg-teal-50" 
+      color: "text-amber-600", 
+      bgColor: "bg-amber-50" 
     },
     { 
       title: "Total Meals", 
       value: meals?.length || getVal("totalMeals") || 0, 
       icon: Utensils, 
-      color: "text-purple-600", 
-      bgColor: "bg-purple-50" 
+      color: "text-orange-600", 
+      bgColor: "bg-orange-50" 
     },
     { 
       title: "Total Orders", 
@@ -124,8 +124,8 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0891b2" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#0891b2" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#ea580c" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#ea580c" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -147,11 +147,11 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
                 <Area 
                   type="monotone" 
                   dataKey="orders" 
-                  stroke="#0891b2" 
+                  stroke="#ea580c" 
                   strokeWidth={3} 
                   fillOpacity={1} 
                   fill="url(#colorOrders)"
-                  dot={{ r: 4, fill: '#0891b2', strokeWidth: 2, stroke: '#fff' }}
+                  dot={{ r: 4, fill: '#ea580c', strokeWidth: 2, stroke: '#fff' }}
                   activeDot={{ r: 6, strokeWidth: 0 }}
                 />
               </AreaChart>
@@ -170,7 +170,7 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
             {users && users.length > 0 ? (
               [...users].reverse().slice(0, 5).map((user: any) => (
                 <div key={user.id} className="flex items-center gap-3 p-2 hover:bg-zinc-50 rounded-xl transition-colors">
-                  <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 font-bold uppercase">
+                  <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold uppercase">
                     {user?.name?.charAt(0) || 'U'}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -189,7 +189,7 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
 
           <Link 
             href="/admin-dashboard/all-users"
-            className="mt-6 w-full py-2.5 px-4 bg-cyan-50/50 hover:bg-cyan-100/50 text-cyan-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-cyan-100/50"
+            className="mt-6 w-full py-2.5 px-4 bg-orange-50/50 hover:bg-orange-100/50 text-orange-700 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-orange-100/50"
           >
             View All Users
             <ArrowRight className="h-4 w-4" />

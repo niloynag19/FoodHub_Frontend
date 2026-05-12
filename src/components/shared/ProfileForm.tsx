@@ -65,11 +65,11 @@ export default function ProfileForm({ user }: { user: any }) {
               </div>
               
               <div className="relative w-40 h-40 mx-auto">
-                <div className="w-full h-full rounded-full bg-blue-50/50 flex items-center justify-center border-4 border-white shadow-xl overflow-hidden group relative">
+                <div className="w-full h-full rounded-full bg-orange-50/50 flex items-center justify-center border-4 border-white shadow-xl overflow-hidden group relative">
                   {user?.image ? (
                     <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-5xl font-bold text-blue-600">
+                    <span className="text-5xl font-bold text-orange-600">
                       {user?.name?.charAt(0) || "U"}
                     </span>
                   )}
@@ -77,7 +77,7 @@ export default function ProfileForm({ user }: { user: any }) {
                     <Camera className="text-white h-8 w-8" />
                   </div>
                 </div>
-                <button className="absolute bottom-2 right-2 p-2.5 bg-cyan-700 text-white rounded-xl shadow-lg hover:bg-cyan-800 transition-all border-2 border-white">
+                <button className="absolute bottom-2 right-2 p-2.5 bg-orange-600 text-white rounded-xl shadow-lg hover:bg-orange-700 transition-all border-2 border-white">
                   <Camera className="h-4 w-4" />
                 </button>
               </div>
@@ -89,7 +89,7 @@ export default function ProfileForm({ user }: { user: any }) {
             </div>
 
             <div className="mt-6">
-              <span className="inline-flex items-center px-4 py-1 rounded-xl bg-zinc-50 text-zinc-400 text-[10px] font-bold uppercase tracking-wider border border-zinc-100">
+              <span className="inline-flex items-center px-4 py-1 rounded-xl bg-orange-50 text-orange-600 text-[10px] font-bold uppercase tracking-wider border border-orange-100">
                 {user?.role}
               </span>
             </div>
@@ -112,7 +112,7 @@ export default function ProfileForm({ user }: { user: any }) {
                   <Input 
                     name="name" 
                     defaultValue={user?.name} 
-                    className="h-12 rounded-xl bg-white border-zinc-200 focus:border-cyan-500 focus:ring-cyan-500 transition-all" 
+                    className="h-12 rounded-xl bg-white border-zinc-200 focus:border-orange-500 focus:ring-orange-500 transition-all" 
                   />
                 </div>
                 <div className="space-y-2">
@@ -135,7 +135,7 @@ export default function ProfileForm({ user }: { user: any }) {
                     name="phone" 
                     defaultValue={user?.phone || ""} 
                     placeholder="+880 1XXX XXXXXX" 
-                    className="h-12 rounded-xl border-zinc-200" 
+                    className="h-12 rounded-xl border-zinc-200 focus:border-orange-500" 
                   />
                 </div>
                 <div className="space-y-2">
@@ -145,7 +145,7 @@ export default function ProfileForm({ user }: { user: any }) {
                       name="address" 
                       defaultValue={user?.address || ""} 
                       placeholder="e.g. New York, USA" 
-                      className="h-12 rounded-xl border-zinc-200" 
+                      className="h-12 rounded-xl border-zinc-200 focus:border-orange-500" 
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
                       <MapPin className="h-4 w-4 text-zinc-300" />
@@ -161,7 +161,7 @@ export default function ProfileForm({ user }: { user: any }) {
               <Textarea 
                 name="bio"
                 placeholder="Tell us a little bit about yourself and your culinary journey..."
-                className="min-h-[120px] rounded-2xl border-zinc-200 resize-none"
+                className="min-h-[120px] rounded-2xl border-zinc-200 resize-none focus:border-orange-500"
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function ProfileForm({ user }: { user: any }) {
             <div className="flex justify-end pt-6">
               <Button 
                 disabled={loading} 
-                className="px-8 bg-cyan-800 hover:bg-cyan-900 text-white h-12 rounded-xl font-bold transition-all shadow-md flex items-center gap-2"
+                className="px-8 bg-orange-600 hover:bg-orange-700 text-white h-12 rounded-xl font-bold transition-all shadow-md flex items-center gap-2"
               >
                 {loading ? <Loader2 className="animate-spin h-4 w-4" /> : "Save Changes"}
               </Button>
