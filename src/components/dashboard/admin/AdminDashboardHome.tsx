@@ -48,31 +48,36 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
 
   const { summary = {}, recentOrderVolume = [], recentUsers = [] } = stats;
 
+  // Flexible data mapping to handle different API structures
+  const getVal = (key: string) => {
+    return summary[key] ?? stats[key] ?? stats.data?.[key] ?? 0;
+  };
+
   const summaryCards = [
     { 
       title: "Total Users", 
-      value: summary.totalUsers ?? 0, 
+      value: getVal("totalUsers"), 
       icon: Users, 
       color: "text-cyan-600", 
       bgColor: "bg-cyan-50" 
     },
     { 
       title: "Total Providers", 
-      value: summary.totalProviders ?? 0, 
+      value: getVal("totalProviders"), 
       icon: Store, 
       color: "text-teal-600", 
       bgColor: "bg-teal-50" 
     },
     { 
       title: "Total Meals", 
-      value: summary.totalMeals ?? 0, 
+      value: getVal("totalMeals"), 
       icon: Utensils, 
       color: "text-purple-600", 
       bgColor: "bg-purple-50" 
     },
     { 
       title: "Total Orders", 
-      value: summary.totalOrders ?? 0, 
+      value: getVal("totalOrders"), 
       icon: ShoppingCart, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
@@ -81,6 +86,19 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700">
+      {/* Detailed Debug Info */}
+      <div className="bg-zinc-900 p-4 rounded-xl border border-green-500/50 overflow-hidden">
+        <p className="text-green-500 font-mono text-xs mb-2 font-bold">--- DASHBOARD DEBUGGER ---</p>
+        <pre className="text-[10px] text-green-400 overflow-auto max-h-40 font-mono">
+          {JSON.stringify({ 
+            received_stats_keys: Object.keys(stats || {}),
+            has_summary: !!stats?.summary,
+            summary_keys: stats?.summary ? Object.keys(stats.summary) : 'N/A',
+            data_preview: JSON.stringify(stats).substring(0, 200) + "..."
+          }, null, 2)}
+        </pre>
+      </div>
+
       {/* Title */}
       <h1 className="text-2xl font-bold text-zinc-900">Overview</h1>
 
