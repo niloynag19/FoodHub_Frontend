@@ -61,17 +61,20 @@ export default async function MyMealsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {meals.map((meal) => {
+          {meals.map((meal, index) => {
             // Safety Check: Skip if meal object is completely invalid
             if (!meal) return null;
+            
+            // Use ID if available, otherwise use index for stability
+            const stableKey = meal?.id || `meal-fallback-${index}`;
 
             return (
-              <div key={meal?.id || Math.random()} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-600/5 transition-all duration-500">
+              <div key={stableKey} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-600/5 transition-all duration-500">
                 {/* Image Section */}
                 <div className="relative h-56 w-full overflow-hidden bg-zinc-100">
                   <Image 
                     src={meal?.image || Global_Image} 
-                    alt={meal?.name || "Meal Image"}
+                    alt={meal?.name || "Meal"}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -119,7 +122,9 @@ export default async function MyMealsPage() {
                         <DeleteMealButton mealId={meal.id} />
                       </>
                     ) : (
-                      <p className="text-[10px] text-zinc-400 italic">ID Missing</p>
+                      <div className="flex-1 h-11 bg-zinc-50 rounded-xl flex items-center justify-center">
+                        <span className="text-[10px] text-zinc-400 italic">Record Incomplete</span>
+                      </div>
                     )}
                   </div>
                 </div>
