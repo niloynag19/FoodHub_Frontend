@@ -108,6 +108,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           id="login-form"
           onSubmit={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             form.handleSubmit();
           }}>
           <FieldGroup className="space-y-4">
@@ -155,10 +156,19 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
               )
             }} />
           </FieldGroup>
+
+          <Button 
+            type="submit" 
+            disabled={isLoading}
+            className="w-full h-11 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-lg shadow-orange-200 transition-all active:scale-[0.98] mt-6"
+          >
+            {isLoading ? "Signing in..." : "Sign In"}
+          </Button>
         </form>
 
         <div className="grid grid-cols-2 gap-3 mt-6">
           <Button 
+            type="button"
             variant="outline" 
             size="sm" 
             className="h-9 rounded-xl border-dashed border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-[10px] font-bold uppercase tracking-tighter"
@@ -167,6 +177,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
             <UserCog className="mr-1.5 h-3.5 w-3.5" /> Demo Admin
           </Button>
           <Button 
+            type="button"
             variant="outline" 
             size="sm" 
             className="h-9 rounded-xl border-dashed border-blue-200 hover:border-blue-500 hover:bg-blue-50 text-[10px] font-bold uppercase tracking-tighter"
@@ -177,15 +188,6 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4 pt-0">
-        <Button 
-          form="login-form" 
-          type="submit" 
-          disabled={isLoading}
-          className="w-full h-11 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-lg shadow-orange-200 transition-all active:scale-[0.98]"
-        >
-          {isLoading ? "Signing in..." : "Sign In"}
-        </Button>
-        
         <div className="relative w-full py-2">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-zinc-100" />
@@ -219,6 +221,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           </Link>
         </p>
       </CardFooter>
+
     </Card>
   )
 }
