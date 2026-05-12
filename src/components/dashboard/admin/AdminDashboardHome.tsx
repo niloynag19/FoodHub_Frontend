@@ -34,15 +34,24 @@ interface AdminDashboardHomeProps {
 const COLORS = ["#f97316", "#ef4444", "#8b5cf6", "#10b981", "#3b82f6", "#6366f1"];
 
 export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
-  const { summary, ordersByStatus, categoryStats, monthlyRevenue } = stats;
+  if (!stats) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-zinc-500 font-bold italic uppercase tracking-widest">No dashboard data available.</p>
+      </div>
+    );
+  }
+
+  const { summary = {}, ordersByStatus = [], categoryStats = [], monthlyRevenue = [] } = stats;
 
   const summaryCards = [
-    { title: "Total Users", value: summary.totalUsers, icon: Users, color: "bg-blue-500", text: "text-blue-500" },
-    { title: "Total Providers", value: summary.totalProviders, icon: Store, color: "bg-purple-500", text: "text-purple-500" },
-    { title: "Total Meals", value: summary.totalMeals, icon: Utensils, color: "bg-orange-500", text: "text-orange-500" },
-    { title: "Total Orders", value: summary.totalOrders, icon: ShoppingCart, color: "bg-emerald-500", text: "text-emerald-500" },
-    { title: "Total Revenue", value: `$${summary.totalRevenue.toFixed(2)}`, icon: DollarSign, color: "bg-rose-500", text: "text-rose-500" },
+    { title: "Total Users", value: summary.totalUsers ?? 0, icon: Users, color: "bg-blue-500", text: "text-blue-500" },
+    { title: "Total Providers", value: summary.totalProviders ?? 0, icon: Store, color: "bg-purple-500", text: "text-purple-500" },
+    { title: "Total Meals", value: summary.totalMeals ?? 0, icon: Utensils, color: "bg-orange-500", text: "text-orange-500" },
+    { title: "Total Orders", value: summary.totalOrders ?? 0, icon: ShoppingCart, color: "bg-emerald-500", text: "text-emerald-500" },
+    { title: "Total Revenue", value: `$${(summary.totalRevenue ?? 0).toFixed(2)}`, icon: DollarSign, color: "bg-rose-500", text: "text-rose-500" },
   ];
+
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">

@@ -32,14 +32,23 @@ interface ProviderDashboardHomeProps {
 const COLORS = ["#f97316", "#ef4444", "#8b5cf6", "#10b981", "#3b82f6", "#6366f1"];
 
 export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => {
-  const { summary, recentOrders, ordersByStatus } = stats;
+  if (!stats) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-zinc-500 font-bold italic uppercase tracking-widest">No dashboard data available.</p>
+      </div>
+    );
+  }
+
+  const { summary = {}, recentOrders = [], ordersByStatus = [] } = stats;
 
   const summaryCards = [
-    { title: "My Meals", value: summary.totalMeals, icon: Utensils, color: "bg-orange-500", text: "text-orange-500" },
-    { title: "Total Orders", value: summary.totalOrders, icon: ShoppingCart, color: "bg-blue-500", text: "text-blue-500" },
-    { title: "Revenue", value: `$${summary.totalRevenue.toFixed(2)}`, icon: DollarSign, color: "bg-emerald-500", text: "text-emerald-500" },
+    { title: "My Meals", value: summary.totalMeals ?? 0, icon: Utensils, color: "bg-orange-500", text: "text-orange-500" },
+    { title: "Total Orders", value: summary.totalOrders ?? 0, icon: ShoppingCart, color: "bg-blue-500", text: "text-blue-500" },
+    { title: "Revenue", value: `$${(summary.totalRevenue ?? 0).toFixed(2)}`, icon: DollarSign, color: "bg-emerald-500", text: "text-emerald-500" },
     { title: "Recent Orders", value: recentOrders.length, icon: Clock, color: "bg-purple-500", text: "text-purple-500" },
   ];
+
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
