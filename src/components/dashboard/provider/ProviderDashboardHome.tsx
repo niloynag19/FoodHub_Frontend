@@ -59,8 +59,10 @@ export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardH
   }).reverse();
 
   const chartData = last7Days.map(date => {
-    const dayOrders = orders.filter(o => new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date);
-    const revenue = dayOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const dayOrders = orders?.filter(o => 
+      o?.createdAt && new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date
+    ) || [];
+    const revenue = dayOrders.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0);
     return { date, revenue };
   });
 
@@ -74,21 +76,21 @@ export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardH
     },
     { 
       title: "Total Orders", 
-      value: getVal("totalOrders") || orders.length, 
+      value: getVal("totalOrders") || orders?.length || 0, 
       icon: ShoppingCart, 
       color: "text-blue-600", 
       bgColor: "bg-blue-50" 
     },
     { 
       title: "Revenue", 
-      value: `$${(getVal("totalRevenue") || orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0)).toFixed(2)}`, 
+      value: `$${(Number(getVal("totalRevenue")) || orders?.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0) || 0).toFixed(2)}`, 
       icon: DollarSign, 
       color: "text-emerald-600", 
       bgColor: "bg-emerald-50" 
     },
     { 
       title: "Active Orders", 
-      value: orders.filter((o: any) => o.status !== 'DELIVERED' && o.status !== 'CANCELLED').length, 
+      value: orders?.filter((o: any) => o?.status !== 'DELIVERED' && o?.status !== 'CANCELLED').length || 0, 
       icon: Clock, 
       color: "text-purple-600", 
       bgColor: "bg-purple-50" 
@@ -171,17 +173,17 @@ export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardH
                     <Package className="h-5 w-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-zinc-900 truncate">Order #{order.id.slice(-6)}</p>
-                    <p className="text-xs text-zinc-500">{new Date(order.createdAt).toLocaleDateString()}</p>
+                    <p className="text-sm font-semibold text-zinc-900 truncate">Order #{order?.id?.slice(-6) || 'XXXXXX'}</p>
+                    <p className="text-xs text-zinc-500">{order?.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-zinc-900">${order.totalAmount.toFixed(2)}</p>
+                    <p className="text-sm font-bold text-zinc-900">${(Number(order?.totalAmount) || 0).toFixed(2)}</p>
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
-                      order.status === 'DELIVERED' ? 'bg-emerald-50 text-emerald-600' :
-                      order.status === 'CANCELLED' ? 'bg-red-50 text-red-600' :
+                      order?.status === 'DELIVERED' ? 'bg-emerald-50 text-emerald-600' :
+                      order?.status === 'CANCELLED' ? 'bg-red-50 text-red-600' :
                       'bg-blue-50 text-blue-600'
                     }`}>
-                      {order.status}
+                      {order?.status || 'PENDING'}
                     </span>
                   </div>
                 </div>

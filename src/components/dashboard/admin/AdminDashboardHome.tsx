@@ -61,21 +61,23 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDash
   }).reverse();
 
   const chartData = last7Days.map(date => {
-    const count = orders.filter(o => new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date).length;
+    const count = orders?.filter(o => 
+      o?.createdAt && new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date
+    ).length || 0;
     return { date, orders: count };
   });
 
   const summaryCards = [
     { 
       title: "Total Users", 
-      value: getVal("totalUsers") || users.length, 
+      value: getVal("totalUsers") || users?.length || 0, 
       icon: Users, 
       color: "text-cyan-600", 
       bgColor: "bg-cyan-50" 
     },
     { 
       title: "Total Providers", 
-      value: getVal("totalProviders") || users.filter(u => u.role === 'PROVIDER').length, 
+      value: getVal("totalProviders") || users?.filter(u => u?.role === 'PROVIDER').length || 0, 
       icon: Store, 
       color: "text-teal-600", 
       bgColor: "bg-teal-50" 
@@ -89,7 +91,7 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDash
     },
     { 
       title: "Total Orders", 
-      value: getVal("totalOrders") || orders.length, 
+      value: getVal("totalOrders") || orders?.length || 0, 
       icon: ShoppingCart, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
@@ -167,11 +169,11 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDash
               [...users].reverse().slice(0, 5).map((user: any) => (
                 <div key={user.id} className="flex items-center gap-3 p-2 hover:bg-zinc-50 rounded-xl transition-colors">
                   <div className="h-10 w-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 font-bold uppercase">
-                    {user.name.charAt(0)}
+                    {user?.name?.charAt(0) || 'U'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-zinc-900 truncate">{user.name}</p>
-                    <p className="text-xs text-zinc-500 truncate">{user.email}</p>
+                    <p className="text-sm font-semibold text-zinc-900 truncate">{user?.name || 'Unknown User'}</p>
+                    <p className="text-xs text-zinc-500 truncate">{user?.email || 'No email'}</p>
                   </div>
                 </div>
               ))
