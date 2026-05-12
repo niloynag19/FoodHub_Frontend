@@ -1,12 +1,14 @@
 import { statsService } from "@/services/stats.service";
 import { getAllOrdersAction } from "@/actions/order.actions";
+import { getAllMealsAction } from "@/actions/meal.action";
 import React from "react";
 import { ProviderDashboardHome } from "@/components/dashboard/provider/ProviderDashboardHome";
 
 const Page = async () => {
-  const [statsRes, ordersRes] = await Promise.all([
+  const [statsRes, ordersRes, mealsRes] = await Promise.all([
     statsService.getStats(),
-    getAllOrdersAction()
+    getAllOrdersAction(),
+    getAllMealsAction()
   ]);
 
   if (!statsRes.success) {
@@ -19,8 +21,9 @@ const Page = async () => {
 
   const statsData = statsRes.data || statsRes;
   const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
+  const mealsData = Array.isArray(mealsRes.data) ? mealsRes.data : (Array.isArray(mealsRes?.data?.data) ? mealsRes.data.data : []);
   
-  return <ProviderDashboardHome stats={statsData} orders={ordersData} />;
+  return <ProviderDashboardHome stats={statsData} orders={ordersData} meals={mealsData} />;
 };
 
 export default Page;

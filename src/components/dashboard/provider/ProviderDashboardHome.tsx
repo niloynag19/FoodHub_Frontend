@@ -23,6 +23,7 @@ import {
 interface ProviderDashboardHomeProps {
   stats: any;
   orders?: any[];
+  meals?: any[];
 }
 
 const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
@@ -37,7 +38,7 @@ const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
   </div>
 );
 
-export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardHomeProps) => {
+export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: ProviderDashboardHomeProps) => {
   if (!stats) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -69,7 +70,7 @@ export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardH
   const summaryCards = [
     { 
       title: "My Meals", 
-      value: getVal("totalMeals"), 
+      value: meals.length || getVal("totalMeals"), 
       icon: Utensils, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
