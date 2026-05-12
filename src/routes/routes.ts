@@ -10,6 +10,7 @@ export const adminRoutes: Route[] = [
   {
     title: "Admin Management",
     items: [
+      { title: "Overview", url: "/admin-dashboard" },
       { title: "Profile", url: "/admin-dashboard/profile" }, 
       { title: "All Users", url: "/admin-dashboard/all-users" },
       { title: "All Food Items", url: "/admin-dashboard/all-meals" },
@@ -23,6 +24,7 @@ export const providerRoutes: Route[] = [
   {
     title: "Provider Dashboard",
     items: [
+      { title: "Overview", url: "/provider-dashboard" },
       { title: "Profile", url: "/provider-dashboard/profile" },
       { title: "My Menu Items", url: "/provider-dashboard/my-meals" },
       { title: "Add New Meal", url: "/provider-dashboard/add-meal" },
@@ -31,6 +33,7 @@ export const providerRoutes: Route[] = [
     ],
   },
 ];
+
 
 export const customerRoutes: Route[] = [
   {
