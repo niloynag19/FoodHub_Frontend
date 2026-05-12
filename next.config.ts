@@ -19,10 +19,24 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
-    return[
+    return [
       {
-        source:"/api/auth/:path*",
-        destination:`${process.env.NEXT_PUBLIC_API_URL}/api/auth/:path*`,
+        source: "/api/auth/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/auth/:path*`,
+      }
+    ]
+  },
+  async redirects() {
+    return [
+      {
+        source: "/provider-dashboard/my%20meals",
+        destination: "/provider-dashboard/my-meals",
+        permanent: true,
+      },
+      {
+        source: "/provider-dashboard/my+meals",
+        destination: "/provider-dashboard/my-meals",
+        permanent: true,
       }
     ]
   },

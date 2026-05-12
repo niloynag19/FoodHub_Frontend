@@ -34,9 +34,12 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+  // Safety check for role casing
+  const userRole = userInfo.role?.toUpperCase();
+
   return (
     <SidebarProvider>
-      <AppSidebar user={userInfo} />
+      <AppSidebar user={{...userInfo, role: userRole}} />
       
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 sticky top-0 bg-background z-10">
@@ -51,16 +54,16 @@ export default async function DashboardLayout({
               </BreadcrumbItem>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <BreadcrumbItem className="font-bold text-orange-600 uppercase tracking-tight">
-                {userInfo.role} PANEL
+                {userRole || 'USER'} PANEL
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
         <main className="p-6 bg-[#f0f7f9] min-h-[calc(100vh-4rem)]">
           <div className="mx-auto max-w-7xl">
-            {userInfo.role === "ADMIN" && admin}
-            {userInfo.role === "PROVIDER" && provider}
-            {userInfo.role === "CUSTOMER" && customer}
+            {userRole === "ADMIN" && admin}
+            {userRole === "PROVIDER" && provider}
+            {userRole === "CUSTOMER" && customer}
           </div>
         </main>
       </SidebarInset>
