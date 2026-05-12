@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Edit, Plus, UtensilsCrossed, Star } from "lucide-react";
 import Link from "next/link";
 import { getAllMealsAction } from "@/actions/meal.action";
 import DeleteMealButton from "@/components/provider/DeleteMealButton";
@@ -24,81 +23,69 @@ export default async function MyMealsPage() {
 
   return (
     <div className="space-y-10">
-      {/* Page Header */}
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 bg-orange-100 text-orange-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-orange-200">
-              {meals.length} {meals.length === 1 ? 'Dish' : 'Dishes'} Live
-            </span>
-          </div>
           <h1 className="text-3xl font-bold text-zinc-900">My Kitchen Menu</h1>
-          <p className="text-zinc-500 font-medium">Manage your professional food listings and pricing.</p>
+          <p className="text-zinc-500 font-medium">Manage your professional food listings.</p>
         </div>
         
         <Link href="/provider-dashboard/add-meal">
-          <Button className="bg-orange-600 hover:bg-orange-700 text-white px-6 h-12 rounded-xl font-bold shadow-lg shadow-orange-600/20 transition-all flex items-center gap-2">
-            <Plus className="h-5 w-5" />
-            Add New Dish
+          <Button className="bg-orange-600 hover:bg-orange-700 text-white px-6 h-12 rounded-xl font-bold">
+            + Add New Dish
           </Button>
         </Link>
       </div>
 
       {meals.length === 0 ? (
         <div className="bg-white rounded-[2.5rem] border border-zinc-100 p-20 text-center shadow-sm">
-          <div className="w-20 h-20 bg-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-orange-600">
-            <Plus className="h-10 w-10" />
-          </div>
           <h3 className="text-xl font-bold text-zinc-900 mb-2">No meals found</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mb-8">Start adding delicious meals to your kitchen menu.</p>
+          <p className="text-zinc-500">Start adding delicious meals to your menu.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {meals.map((meal, index) => {
             if (!meal) return null;
+            const uniqueKey = `meal-stable-key-${meal?.id || index}-${index}`;
+
             return (
-              <div key={meal?.id || index} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-600/5 transition-all duration-500">
-                {/* Image Section */}
-                <div className="relative h-56 w-full overflow-hidden bg-zinc-100">
-                  <img 
-                    src={meal?.image || Global_Image} 
-                    alt={meal?.name || "Meal"}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-orange-600 font-bold text-[10px] uppercase tracking-wider shadow-sm border border-white/20">
+              <div key={uniqueKey} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                {/* Image Placeholder Div (Most Stable) */}
+                <div 
+                  className="h-56 w-full bg-zinc-100 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${meal?.image || Global_Image})` }}
+                >
+                  <div className="p-4 flex justify-between items-start">
+                    <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-orange-600 font-bold text-[10px] uppercase tracking-wider">
                       {meal?.category || 'General'}
                     </span>
-                  </div>
-                  <div className="absolute bottom-4 right-4">
-                    <div className="bg-orange-600 text-white px-4 py-1.5 rounded-xl font-bold text-sm shadow-xl">
+                    <div className="bg-orange-600 text-white px-4 py-1.5 rounded-xl font-bold text-sm shadow-lg">
                       {meal?.price || '0'} TK
                     </div>
                   </div>
                 </div>
 
-                {/* Content Section */}
                 <div className="p-6">
-                  <div className="flex items-center gap-2 mb-2 text-orange-500">
-                    <span className="text-[10px] font-bold uppercase tracking-widest">Premium Dish</span>
-                  </div>
                   <h3 className="font-bold text-lg text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-1">
                     {meal?.name || 'Untitled Meal'}
                   </h3>
+                  
                   <p className="text-zinc-500 text-xs line-clamp-2 mt-2 h-10 leading-relaxed">
                     {meal?.description || 'No description available.'}
                   </p>
+                  
                   <div className="flex items-center gap-2 mt-6 pt-5 border-t border-zinc-50">
-                    {meal?.id && (
+                    {meal?.id ? (
                       <>
                         <Link href={`/provider-dashboard/edit-meal/${meal.id}`} className="flex-1">
-                          <Button variant="outline" className="w-full rounded-xl border-zinc-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 font-bold text-xs h-11 transition-all">
+                          <Button variant="outline" className="w-full rounded-xl hover:bg-orange-50 hover:text-orange-600 font-bold text-xs h-11">
                             Edit
                           </Button>
                         </Link>
                         <DeleteMealButton mealId={meal.id} />
                       </>
+                    ) : (
+                      <span className="text-xs text-zinc-400 italic">Incomplete Record</span>
                     )}
                   </div>
                 </div>
