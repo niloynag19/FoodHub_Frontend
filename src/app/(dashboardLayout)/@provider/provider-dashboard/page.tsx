@@ -13,7 +13,8 @@ const Page = async () => {
     );
   }
 
-  return <ProviderDashboardHome stats={result.data} />;
+  const statsData = result.data || result;
+  return <ProviderDashboardHome stats={statsData} />;
 };
 
 export default Page;

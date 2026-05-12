@@ -13,7 +13,8 @@ const Page = async () => {
         );
     }
 
-    return <AdminDashboardHome stats={result.data} />;
+    const statsData = result.data || result;
+    return <AdminDashboardHome stats={statsData} />;
 };
 
 export default Page;
