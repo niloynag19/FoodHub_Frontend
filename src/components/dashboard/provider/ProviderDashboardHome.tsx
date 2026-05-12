@@ -70,22 +70,23 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
 
   const summaryCards = [
     { 
-      title: "My Meals", 
-      value: meals?.length || getVal("totalMeals") || 0, 
+      title: "My Total Meals", 
+      // Prioritize the real database array length
+      value: meals && meals.length > 0 ? meals.length : (getVal("totalMeals") || 0), 
       icon: Utensils, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
     },
     { 
       title: "Total Orders", 
-      value: orders?.length || getVal("totalOrders") || 0, 
+      value: orders && orders.length > 0 ? orders.length : (getVal("totalOrders") || 0), 
       icon: ShoppingCart, 
       color: "text-amber-600", 
       bgColor: "bg-amber-50" 
     },
     { 
-      title: "Revenue", 
-      value: `$${(orders?.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0) || Number(getVal("totalRevenue")) || 0).toFixed(2)}`, 
+      title: "Total Revenue", 
+      value: `${(orders?.reduce((sum, o) => sum + (Number(o?.totalAmount) || 0), 0) || Number(getVal("totalRevenue")) || 0).toFixed(0)} TK`, 
       icon: DollarSign, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
@@ -93,7 +94,7 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
     { 
       title: "Active Orders", 
       value: orders?.filter((o: any) => o?.status !== 'DELIVERED' && o?.status !== 'CANCELLED').length || 0, 
-      icon: Clock, 
+      icon: Package, 
       color: "text-amber-600", 
       bgColor: "bg-amber-50" 
     },
