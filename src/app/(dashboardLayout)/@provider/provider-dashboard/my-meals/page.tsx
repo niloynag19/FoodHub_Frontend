@@ -48,30 +48,42 @@ export default async function MyMealsPage() {
             if (!meal) return null;
             const uniqueKey = `meal-stable-key-${meal?.id || index}-${index}`;
 
+            // SAFETY: Extract string from potential object (Fixes React Error #31)
+            const getVal = (val: any) => {
+              if (!val) return "";
+              if (typeof val === 'object') return val.name || val.title || JSON.stringify(val);
+              return String(val);
+            };
+
+            const categoryName = getVal(meal?.category) || "General";
+            const mealName = getVal(meal?.name) || "Untitled Meal";
+            const mealPrice = getVal(meal?.price) || "0";
+            const mealImg = typeof meal?.image === 'string' ? meal.image : Global_Image;
+
             return (
               <div key={uniqueKey} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                {/* Image Placeholder Div (Most Stable) */}
+                {/* Image Placeholder Div */}
                 <div 
                   className="h-56 w-full bg-zinc-100 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${meal?.image || Global_Image})` }}
+                  style={{ backgroundImage: `url(${mealImg})` }}
                 >
                   <div className="p-4 flex justify-between items-start">
                     <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-orange-600 font-bold text-[10px] uppercase tracking-wider">
-                      {meal?.category || 'General'}
+                      {categoryName}
                     </span>
                     <div className="bg-orange-600 text-white px-4 py-1.5 rounded-xl font-bold text-sm shadow-lg">
-                      {meal?.price || '0'} TK
+                      {mealPrice} TK
                     </div>
                   </div>
                 </div>
 
                 <div className="p-6">
                   <h3 className="font-bold text-lg text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-1">
-                    {meal?.name || 'Untitled Meal'}
+                    {mealName}
                   </h3>
                   
                   <p className="text-zinc-500 text-xs line-clamp-2 mt-2 h-10 leading-relaxed">
-                    {meal?.description || 'No description available.'}
+                    {getVal(meal?.description) || 'No description available.'}
                   </p>
                   
                   <div className="flex items-center gap-2 mt-6 pt-5 border-t border-zinc-50">
