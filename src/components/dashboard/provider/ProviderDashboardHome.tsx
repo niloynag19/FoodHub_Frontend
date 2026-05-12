@@ -13,7 +13,12 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
 } from "recharts";
+
 import { 
   Utensils, 
   ShoppingCart, 
@@ -40,7 +45,7 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
     );
   }
 
-  const { summary = {}, recentOrders = [], ordersByStatus = [] } = stats;
+  const { summary = {}, recentOrders = [], ordersByStatus = [], monthlyRevenue = [] } = stats;
 
   const summaryCards = [
     { title: "My Meals", value: summary.totalMeals ?? 0, icon: Utensils, color: "bg-orange-500", text: "text-orange-500" },
@@ -48,7 +53,6 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
     { title: "Revenue", value: `$${(summary.totalRevenue ?? 0).toFixed(2)}`, icon: DollarSign, color: "bg-emerald-500", text: "text-emerald-500" },
     { title: "Recent Orders", value: recentOrders.length, icon: Clock, color: "bg-purple-500", text: "text-purple-500" },
   ];
-
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -77,6 +81,43 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
           </div>
         ))}
       </div>
+
+      {/* Revenue Trend Graph */}
+      <div className="bg-white p-8 rounded-[3rem] border border-zinc-100 shadow-sm">
+        <div className="flex items-center justify-between mb-8">
+          <h3 className="text-xl font-black italic tracking-tighter text-zinc-900 uppercase">Revenue Trend</h3>
+          <div className="h-8 w-8 bg-zinc-50 rounded-full flex items-center justify-center">
+              <TrendingUp className="h-4 w-4 text-zinc-400" />
+          </div>
+        </div>
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={monthlyRevenue}>
+              <defs>
+                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#a1a1aa', fontSize: 12}} />
+              <YAxis axisLine={false} tickLine={false} tick={{fill: '#a1a1aa', fontSize: 12}} />
+              <Tooltip 
+                contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+              />
+              <Area 
+                type="monotone" 
+                dataKey="revenue" 
+                stroke="#f97316" 
+                strokeWidth={4} 
+                fillOpacity={1} 
+                fill="url(#colorRevenue)" 
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Order Status Breakdown */}
