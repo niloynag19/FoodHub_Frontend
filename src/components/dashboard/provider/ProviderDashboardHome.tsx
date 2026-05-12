@@ -138,7 +138,7 @@ export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardH
                   tickFormatter={(val) => `$${val}`}
                 />
                 <Tooltip 
-                  formatter={(val: number) => [`$${val.toFixed(2)}`, 'Revenue']}
+                  formatter={(val: any) => [`$${Number(val).toFixed(2)}`, 'Revenue']}
                   contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
                 />
                 <Area 
