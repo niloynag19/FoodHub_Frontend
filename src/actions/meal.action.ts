@@ -34,7 +34,7 @@ export async function createMealAction(payload: any) {
 
 export async function getAllMealsAction() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meals`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meals?limit=100`, {
       method: "GET",
       cache: "no-store", 
     });
