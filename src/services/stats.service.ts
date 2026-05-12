@@ -16,7 +16,7 @@ export const statsService = {
           "Content-Type": "application/json",
           Cookie: cookieStore.toString() 
         },
-        next: { revalidate: 60 }, // Cache for 1 minute
+        next: { revalidate: 0 },
       });
 
       if (!res.ok) {

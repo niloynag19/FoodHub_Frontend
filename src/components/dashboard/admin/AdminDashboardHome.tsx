@@ -46,7 +46,7 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
     );
   }
 
-  const { summary = {}, ordersByStatus = [], categoryStats = [], monthlyRevenue = [], weeklyOrders = [] } = stats;
+  const { summary = {}, ordersByStatus = [], categoryStats = [], monthlyRevenue = [], recentOrderVolume = [] } = stats;
 
   const summaryCards = [
     { title: "Total Users", value: summary.totalUsers ?? 0, icon: Users, color: "bg-blue-500", text: "text-blue-500" },
@@ -89,14 +89,14 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
         {/* Weekly Orders - Area Chart */}
         <div className="bg-white p-8 rounded-[3rem] border border-zinc-100 shadow-sm lg:col-span-2">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-black italic tracking-tighter text-zinc-900 uppercase">Weekly Order Volume</h3>
+            <h3 className="text-xl font-black italic tracking-tighter text-zinc-900 uppercase">Recent Order Volume</h3>
             <div className="h-8 w-8 bg-zinc-50 rounded-full flex items-center justify-center">
                 <Activity className="h-4 w-4 text-zinc-400" />
             </div>
           </div>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={weeklyOrders}>
+              <AreaChart data={recentOrderVolume}>
                 <defs>
                   <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
@@ -104,7 +104,7 @@ export const AdminDashboardHome = ({ stats }: AdminDashboardHomeProps) => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
-                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fill: '#a1a1aa', fontSize: 12}} />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#a1a1aa', fontSize: 10}} />
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#a1a1aa', fontSize: 12}} />
                 <Tooltip 
                   contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
