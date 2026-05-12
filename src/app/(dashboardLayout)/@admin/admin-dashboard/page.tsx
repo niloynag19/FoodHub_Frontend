@@ -20,8 +20,8 @@ const Page = async () => {
     }
 
     const statsData = statsRes.data || statsRes;
-    const usersData = usersRes.data || usersRes || [];
-    const ordersData = ordersRes.data || ordersRes || [];
+    const usersData = Array.isArray(usersRes.data) ? usersRes.data : (Array.isArray(usersRes) ? usersRes : []);
+    const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
 
     return <AdminDashboardHome stats={statsData} users={usersData} orders={ordersData} />;
 };

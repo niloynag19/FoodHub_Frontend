@@ -18,7 +18,7 @@ const Page = async () => {
   }
 
   const statsData = statsRes.data || statsRes;
-  const ordersData = ordersRes.data || ordersRes || [];
+  const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
   
   return <ProviderDashboardHome stats={statsData} orders={ordersData} />;
 };
