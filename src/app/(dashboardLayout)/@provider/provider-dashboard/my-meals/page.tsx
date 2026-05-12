@@ -61,60 +61,71 @@ export default async function MyMealsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {meals.map((meal) => (
-            <div key={meal.id} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-600/5 transition-all duration-500">
-              {/* Image Section */}
-              <div className="relative h-56 w-full overflow-hidden bg-zinc-100">
-                <Image 
-                  src={meal.image || Global_Image} 
-                  alt={meal.name}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                />
-                
-                {/* Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="absolute top-4 left-4">
-                  <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-orange-600 font-bold text-[10px] uppercase tracking-wider shadow-sm border border-white/20">
-                    {meal.category || 'Meal'}
-                  </span>
+          {meals.map((meal) => {
+            // Safety Check: Skip if meal object is completely invalid
+            if (!meal) return null;
+
+            return (
+              <div key={meal?.id || Math.random()} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-600/5 transition-all duration-500">
+                {/* Image Section */}
+                <div className="relative h-56 w-full overflow-hidden bg-zinc-100">
+                  <Image 
+                    src={meal?.image || Global_Image} 
+                    alt={meal?.name || "Meal Image"}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  />
+                  
+                  {/* Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-orange-600 font-bold text-[10px] uppercase tracking-wider shadow-sm border border-white/20">
+                      {meal?.category || 'General'}
+                    </span>
+                  </div>
+                  
+                  <div className="absolute bottom-4 right-4">
+                    <div className="bg-orange-600 text-white px-4 py-1.5 rounded-xl font-bold text-sm shadow-xl">
+                      ৳{meal?.price || '0.00'}
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="absolute bottom-4 right-4">
-                  <div className="bg-orange-600 text-white px-4 py-1.5 rounded-xl font-bold text-sm shadow-xl">
-                    ৳{meal.price}
+
+                {/* Content Section */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-2 text-orange-500">
+                    <Star className="h-3 w-3 fill-current" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Premium Dish</span>
+                  </div>
+                  
+                  <h3 className="font-bold text-lg text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-1">
+                    {meal?.name || 'Untitled Meal'}
+                  </h3>
+                  
+                  <p className="text-zinc-500 text-xs line-clamp-2 mt-2 h-10 leading-relaxed">
+                    {meal?.description || 'No description available for this meal.'}
+                  </p>
+                  
+                  <div className="flex items-center gap-2 mt-6 pt-5 border-t border-zinc-50">
+                    {meal?.id ? (
+                      <>
+                        <Link href={`/provider-dashboard/edit-meal/${meal.id}`} className="flex-1">
+                            <Button variant="outline" className="w-full rounded-xl border-zinc-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 font-bold text-xs h-11 transition-all">
+                              <Edit className="h-3.5 w-3.5 mr-2" /> Edit
+                            </Button>
+                        </Link>
+                        <DeleteMealButton mealId={meal.id} />
+                      </>
+                    ) : (
+                      <p className="text-[10px] text-zinc-400 italic">ID Missing</p>
+                    )}
                   </div>
                 </div>
               </div>
-
-              {/* Content Section */}
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-2 text-orange-500">
-                  <Star className="h-3 w-3 fill-current" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Premium Dish</span>
-                </div>
-                
-                <h3 className="font-bold text-lg text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-1">
-                  {meal.name}
-                </h3>
-                
-                <p className="text-zinc-500 text-xs line-clamp-2 mt-2 h-10 leading-relaxed">
-                  {meal.description}
-                </p>
-                
-                <div className="flex items-center gap-2 mt-6 pt-5 border-t border-zinc-50">
-                   <Link href={`/provider-dashboard/edit-meal/${meal.id}`} className="flex-1">
-                      <Button variant="outline" className="w-full rounded-xl border-zinc-200 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 font-bold text-xs h-11 transition-all">
-                        <Edit className="h-3.5 w-3.5 mr-2" /> Edit
-                      </Button>
-                   </Link>
-                   <DeleteMealButton mealId={meal.id} />
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
