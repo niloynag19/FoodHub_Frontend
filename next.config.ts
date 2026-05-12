@@ -32,11 +32,6 @@ const nextConfig: NextConfig = {
         source: "/provider-dashboard/my%20meals",
         destination: "/provider-dashboard/my-meals",
         permanent: true,
-      },
-      {
-        source: "/provider-dashboard/my+meals",
-        destination: "/provider-dashboard/my-meals",
-        permanent: true,
       }
     ]
   },
