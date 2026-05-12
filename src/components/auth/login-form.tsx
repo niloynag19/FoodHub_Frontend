@@ -43,20 +43,22 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         const { data, error } = await authClient.signIn.email({
           email: value.email,
           password: value.password,
-          callbackURL: "/"
         })
         if (error) {
-          toast.error(error.message, { id: toastId })
+          console.error("Login error:", error);
+          toast.error(error.message || "Invalid credentials", { id: toastId })
           setIsLoading(false);
           return;
         }
         toast.success("Welcome back!", { id: toastId })
-        window.location.href = "/";
+        window.location.reload(); // Refresh to update session state
       } catch (error) {
+        console.error("Unexpected login error:", error);
         toast.error("Something went wrong", { id: toastId })
         setIsLoading(false);
       }
     }
+
   })
 
   const fillDemoCredentials = (role: 'admin' | 'provider') => {
