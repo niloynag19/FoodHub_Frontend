@@ -160,43 +160,9 @@ export default function ProfileForm({ user }: { user: any }) {
               <label className="text-sm font-bold text-zinc-700 ml-1">Professional Bio</label>
               <Textarea 
                 name="bio"
-                placeholder="Tell us a little bit about yourself and your career goals..."
+                placeholder="Tell us a little bit about yourself and your culinary journey..."
                 className="min-h-[120px] rounded-2xl border-zinc-200 resize-none"
               />
-            </div>
-
-            {/* Section: Social Links */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-zinc-50">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-zinc-700 ml-1">LinkedIn URL</label>
-                <div className="relative">
-                  <Input 
-                    placeholder="https://linkedin.com/in/..." 
-                    className="h-12 rounded-xl border-zinc-200 pl-10" 
-                  />
-                  <Linkedin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-zinc-700 ml-1">GitHub URL</label>
-                <div className="relative">
-                  <Input 
-                    placeholder="https://github.com/..." 
-                    className="h-12 rounded-xl border-zinc-200 pl-10" 
-                  />
-                  <Github className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-                </div>
-              </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-sm font-bold text-zinc-700 ml-1">Portfolio URL</label>
-                <div className="relative">
-                  <Input 
-                    placeholder="https://..." 
-                    className="h-12 rounded-xl border-zinc-200 pl-10" 
-                  />
-                  <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-                </div>
-              </div>
             </div>
 
             {/* Form Actions */}
