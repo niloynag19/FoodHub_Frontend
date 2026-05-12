@@ -26,6 +26,7 @@ interface AdminDashboardHomeProps {
   stats: any;
   users?: any[];
   orders?: any[];
+  meals?: any[];
 }
 
 const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
@@ -40,7 +41,7 @@ const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
   </div>
 );
 
-export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDashboardHomeProps) => {
+export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] }: AdminDashboardHomeProps) => {
   if (!stats) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -85,7 +86,7 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [] }: AdminDash
     },
     { 
       title: "Total Meals", 
-      value: getVal("totalMeals"), 
+      value: meals.length || getVal("totalMeals"), 
       icon: Utensils, 
       color: "text-purple-600", 
       bgColor: "bg-purple-50" 

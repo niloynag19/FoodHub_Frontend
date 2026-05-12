@@ -1,14 +1,16 @@
 import { statsService } from "@/services/stats.service";
 import { userService } from "@/services/user.service";
 import { getAllOrdersAction } from "@/actions/order.actions";
+import { getAllMealsAction } from "@/actions/meal.action";
 import React from 'react';
 import { AdminDashboardHome } from "@/components/dashboard/admin/AdminDashboardHome";
 
 const Page = async () => {
-    const [statsRes, usersRes, ordersRes] = await Promise.all([
+    const [statsRes, usersRes, ordersRes, mealsRes] = await Promise.all([
         statsService.getStats(),
         userService.getAllUsers(),
-        getAllOrdersAction()
+        getAllOrdersAction(),
+        getAllMealsAction()
     ]);
     
     if (!statsRes.success) {
@@ -22,8 +24,9 @@ const Page = async () => {
     const statsData = statsRes.data || statsRes;
     const usersData = Array.isArray(usersRes.data) ? usersRes.data : (Array.isArray(usersRes) ? usersRes : []);
     const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
+    const mealsData = Array.isArray(mealsRes.data) ? mealsRes.data : (Array.isArray(mealsRes?.data?.data) ? mealsRes.data.data : []);
 
-    return <AdminDashboardHome stats={statsData} users={usersData} orders={ordersData} />;
+    return <AdminDashboardHome stats={statsData} users={usersData} orders={ordersData} meals={mealsData} />;
 };
 
 export default Page;
