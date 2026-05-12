@@ -33,10 +33,15 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
       email: "",
       password: "",
     },
-    validators: {
-      onSubmit: fromSchema
-    },
     onSubmit: async ({ value }) => {
+      console.log("Submit clicked:", value);
+      const validation = fromSchema.safeParse(value);
+      if (!validation.success) {
+        console.error("Validation failed:", validation.error);
+        toast.error(validation.error.errors[0].message);
+        return;
+      }
+
       const toastId = toast.loading("Logging in...");
       setIsLoading(true);
       try {
@@ -51,15 +56,15 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Welcome back!", { id: toastId })
-        window.location.reload(); // Refresh to update session state
+        window.location.reload();
       } catch (error) {
-        console.error("Unexpected login error:", error);
+        console.error("Unexpected error:", error);
         toast.error("Something went wrong", { id: toastId })
         setIsLoading(false);
       }
     }
-
   })
+
 
   const fillDemoCredentials = (role: 'admin' | 'provider') => {
     if (role === 'admin') {
