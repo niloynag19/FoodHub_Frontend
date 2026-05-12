@@ -71,8 +71,8 @@ export const ProviderDashboardHome = ({ stats, orders = [], meals = [] }: Provid
   const summaryCards = [
     { 
       title: "My Total Meals", 
-      // Prioritize the real database array length
-      value: meals && meals.length > 0 ? meals.length : (getVal("totalMeals") || 0), 
+      // STRICT: Always use the live array length if it exists
+      value: Array.isArray(meals) ? meals.length : 0, 
       icon: Utensils, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 

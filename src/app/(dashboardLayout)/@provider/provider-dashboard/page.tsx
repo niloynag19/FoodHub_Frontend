@@ -20,14 +20,13 @@ const Page = async () => {
   }
 
   const statsData = statsRes.data || statsRes;
-  const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
+  const ordersData = Array.isArray(ordersRes?.data) ? ordersRes.data : (Array.isArray(ordersRes) ? ordersRes : []);
   
-  // Robust mapping identical to My Meals page
-  const mealsData = Array.isArray(mealsRes?.data) 
-    ? mealsRes.data 
-    : (mealsRes?.data?.data || mealsRes?.data || []);
+  // Aggressive Mapping: Check every possible nesting level
+  const mealsData = mealsRes?.data?.data || mealsRes?.data || mealsRes || [];
+  const finalMeals = Array.isArray(mealsData) ? mealsData : [];
   
-  return <ProviderDashboardHome stats={statsData} orders={ordersData} meals={mealsData} />;
+  return <ProviderDashboardHome stats={statsData} orders={ordersData} meals={finalMeals} />;
 };
 
 export default Page;
