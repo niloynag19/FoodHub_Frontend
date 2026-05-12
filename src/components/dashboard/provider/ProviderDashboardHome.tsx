@@ -22,6 +22,7 @@ import {
 
 interface ProviderDashboardHomeProps {
   stats: any;
+  orders?: any[];
 }
 
 const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
@@ -36,7 +37,7 @@ const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
   </div>
 );
 
-export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => {
+export const ProviderDashboardHome = ({ stats, orders = [] }: ProviderDashboardHomeProps) => {
   if (!stats) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -45,33 +46,49 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
     );
   }
 
-  const { summary = {}, recentOrders = [], monthlyRevenue = [] } = stats;
+  // Flexible data mapping to handle different API structures
+  const getVal = (key: string) => {
+    return stats[key] ?? stats.data?.[key] ?? stats.summary?.[key] ?? 0;
+  };
+
+  // Generate Revenue Chart Data from real orders
+  const last7Days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }).reverse();
+
+  const chartData = last7Days.map(date => {
+    const dayOrders = orders.filter(o => new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date);
+    const revenue = dayOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    return { date, revenue };
+  });
 
   const summaryCards = [
     { 
       title: "My Meals", 
-      value: summary.totalMeals ?? 0, 
+      value: getVal("totalMeals"), 
       icon: Utensils, 
       color: "text-orange-600", 
       bgColor: "bg-orange-50" 
     },
     { 
       title: "Total Orders", 
-      value: summary.totalOrders ?? 0, 
+      value: getVal("totalOrders") || orders.length, 
       icon: ShoppingCart, 
       color: "text-blue-600", 
       bgColor: "bg-blue-50" 
     },
     { 
       title: "Revenue", 
-      value: `$${(summary.totalRevenue ?? 0).toFixed(2)}`, 
+      value: `$${(getVal("totalRevenue") || orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0)).toFixed(2)}`, 
       icon: DollarSign, 
       color: "text-emerald-600", 
       bgColor: "bg-emerald-50" 
     },
     { 
       title: "Active Orders", 
-      value: recentOrders.filter((o: any) => o.status !== 'DELIVERED' && o.status !== 'CANCELLED').length, 
+      value: orders.filter((o: any) => o.status !== 'DELIVERED' && o.status !== 'CANCELLED').length, 
       icon: Clock, 
       color: "text-purple-600", 
       bgColor: "bg-purple-50" 
@@ -95,11 +112,11 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
         <div className="lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-zinc-100">
           <div className="mb-6">
             <h3 className="text-lg font-bold text-zinc-900">Revenue Growth</h3>
-            <p className="text-sm text-zinc-500">Monthly revenue trend</p>
+            <p className="text-sm text-zinc-500">Daily revenue trend over the last 7 days</p>
           </div>
           <div className="h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={monthlyRevenue}>
+              <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
@@ -108,7 +125,7 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis 
-                  dataKey="month" 
+                  dataKey="date" 
                   axisLine={false} 
                   tickLine={false} 
                   tick={{fill: '#64748b', fontSize: 12}}
@@ -118,8 +135,10 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
                   axisLine={false} 
                   tickLine={false} 
                   tick={{fill: '#64748b', fontSize: 12}}
+                  tickFormatter={(val) => `$${val}`}
                 />
                 <Tooltip 
+                  formatter={(val: number) => [`$${val.toFixed(2)}`, 'Revenue']}
                   contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
                 />
                 <Area 
@@ -145,8 +164,8 @@ export const ProviderDashboardHome = ({ stats }: ProviderDashboardHomeProps) => 
           </div>
           
           <div className="flex-1 space-y-4">
-            {recentOrders && recentOrders.length > 0 ? (
-              recentOrders.slice(0, 5).map((order: any) => (
+            {orders && orders.length > 0 ? (
+              [...orders].reverse().slice(0, 5).map((order: any) => (
                 <div key={order.id} className="flex items-center gap-3 p-3 hover:bg-zinc-50 rounded-xl transition-colors border border-transparent hover:border-zinc-100">
                   <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                     <Package className="h-5 w-5" />
