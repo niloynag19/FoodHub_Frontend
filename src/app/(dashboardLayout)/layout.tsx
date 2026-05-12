@@ -56,8 +56,8 @@ export default async function DashboardLayout({
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <main className="p-6">
-          <div className="mx-auto max-w-full">
+        <main className="p-6 bg-[#f0f7f9] min-h-[calc(100vh-4rem)]">
+          <div className="mx-auto max-w-7xl">
             {userInfo.role === "ADMIN" && admin}
             {userInfo.role === "PROVIDER" && provider}
             {userInfo.role === "CUSTOMER" && customer}
