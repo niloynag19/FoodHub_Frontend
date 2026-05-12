@@ -1,10 +1,12 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Edit, Plus, UtensilsCrossed, Package, Star, Clock } from "lucide-react";
+import { Edit, Plus, UtensilsCrossed, Star } from "lucide-react";
 import Link from "next/link";
-import { getAllMealsAction } from "@/actions/meal.action";
 import DeleteMealButton from "@/components/provider/DeleteMealButton";
-import Image from "next/image";
 import { Global_Image } from "@/lib/defaultImage"
+import { useEffect, useState } from "react";
+import { getAllMealsAction } from "@/actions/meal.action";
 
 interface Meal {
   id: string;
@@ -15,14 +17,30 @@ interface Meal {
   category?: string;
 }
 
-export const dynamic = "force-dynamic";
+export default function MyMealsPage() {
+  const [meals, setMeals] = useState<Meal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
-export default async function MyMealsPage() {
-  const result = await getAllMealsAction();
+  useEffect(() => {
+    setMounted(true);
+    const fetchMeals = async () => {
+      try {
+        const result = await getAllMealsAction();
+        const mealData: Meal[] = Array.isArray(result?.data) 
+          ? result.data 
+          : result?.data?.data || [];
+        setMeals(mealData);
+      } catch (error) {
+        console.error("Failed to fetch meals:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMeals();
+  }, []);
 
-  const meals: Meal[] = Array.isArray(result?.data) 
-    ? result.data 
-    : result?.data?.data || [];
+  if (!mounted) return null;
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
@@ -31,7 +49,7 @@ export default async function MyMealsPage() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="px-3 py-1 bg-orange-100 text-orange-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-orange-200">
-              {meals.length} {meals.length === 1 ? 'Dish' : 'Dishes'} Live
+              {loading ? '...' : `${meals.length} ${meals.length === 1 ? 'Dish' : 'Dishes'} Live`}
             </span>
           </div>
           <h1 className="text-3xl font-bold text-zinc-900">My Kitchen Menu</h1>
@@ -46,7 +64,11 @@ export default async function MyMealsPage() {
         </Link>
       </div>
 
-      {meals.length === 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        </div>
+      ) : meals.length === 0 ? (
         <div className="bg-white rounded-[2.5rem] border border-zinc-100 p-20 text-center shadow-sm">
           <div className="w-20 h-20 bg-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-orange-600">
             <UtensilsCrossed className="h-10 w-10" />
@@ -62,22 +84,17 @@ export default async function MyMealsPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {meals.map((meal, index) => {
-            // Safety Check: Skip if meal object is completely invalid
             if (!meal) return null;
-            
-            // Use ID if available, otherwise use index for stability
-            const stableKey = meal?.id || `meal-fallback-${index}`;
+            const stableKey = meal?.id || `meal-${index}`;
 
             return (
               <div key={stableKey} className="group bg-white rounded-[2rem] border border-zinc-100 overflow-hidden hover:shadow-2xl hover:shadow-orange-600/5 transition-all duration-500">
                 {/* Image Section */}
                 <div className="relative h-56 w-full overflow-hidden bg-zinc-100">
-                  <Image 
+                  <img 
                     src={meal?.image || Global_Image} 
                     alt={meal?.name || "Meal"}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   
                   {/* Overlays */}
