@@ -12,6 +12,7 @@ import {
   AreaChart,
   Area,
 } from "recharts";
+import { useState, useEffect } from "react";
 
 import { 
   Users, 
@@ -42,6 +43,12 @@ const StatCard = ({ title, value, icon: Icon, color, bgColor }: any) => (
 );
 
 export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] }: AdminDashboardHomeProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   if (!stats) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -55,19 +62,23 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
     return stats[key] ?? stats.data?.[key] ?? stats.summary?.[key] ?? 0;
   };
 
-  // Generate Growth Chart Data from real orders
-  const last7Days = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  }).reverse();
+  // Use backend data if available, otherwise calculate from orders array
+  const chartData = (stats.recentOrderVolume || stats.data?.recentOrderVolume) ? 
+    (stats.recentOrderVolume || stats.data?.recentOrderVolume) : 
+    (() => {
+      const last7Days = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }).reverse();
 
-  const chartData = last7Days.map(date => {
-    const count = orders?.filter(o => 
-      o?.createdAt && new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date
-    ).length || 0;
-    return { date, orders: count };
-  });
+      return last7Days.map(date => {
+        const count = orders?.filter(o => 
+          o?.createdAt && new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) === date
+        ).length || 0;
+        return { date, orders: count };
+      });
+    })();
 
   const summaryCards = [
     { 
@@ -119,43 +130,47 @@ export const AdminDashboardHome = ({ stats, users = [], orders = [], meals = [] 
             <h3 className="text-lg font-bold text-zinc-900">Order Growth</h3>
             <p className="text-sm text-zinc-500">Order volume over the last 7 days</p>
           </div>
-          <div className="h-[350px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ea580c" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#ea580c" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis 
-                  dataKey="date" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: '#64748b', fontSize: 12}}
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: '#64748b', fontSize: 12}}
-                />
-                <Tooltip 
-                  contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="orders" 
-                  stroke="#ea580c" 
-                  strokeWidth={3} 
-                  fillOpacity={1} 
-                  fill="url(#colorOrders)"
-                  dot={{ r: 4, fill: '#ea580c', strokeWidth: 2, stroke: '#fff' }}
-                  activeDot={{ r: 6, strokeWidth: 0 }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div className="h-[350px] w-full flex items-center justify-center">
+            {isMounted ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData}>
+                  <defs>
+                    <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ea580c" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#ea580c" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis 
+                    dataKey="date" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fill: '#64748b', fontSize: 12}}
+                    dy={10}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{fill: '#64748b', fontSize: 12}}
+                  />
+                  <Tooltip 
+                    contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="orders" 
+                    stroke="#ea580c" 
+                    strokeWidth={3} 
+                    fillOpacity={1} 
+                    fill="url(#colorOrders)"
+                    dot={{ r: 4, fill: '#ea580c', strokeWidth: 2, stroke: '#fff' }}
+                    activeDot={{ r: 6, strokeWidth: 0 }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="animate-pulse bg-zinc-50 rounded-xl w-full h-full" />
+            )}
           </div>
         </div>
 
